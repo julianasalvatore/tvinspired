@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Eleva TV - Full Screen Overlay</title>
+<title>Eleva News</title>
 <style>
     /* Reset e Base */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -298,7 +298,7 @@
             
             // Hora
             const timeString = now.toLocaleTimeString('pt-BR', {
-                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: TIMEZONE
+                hour: '2-digit', minute: '2-digit', hour12: false, timeZone: TIMEZONE
             });
 
             document.getElementById('day-line').textContent = dayFormatted;
@@ -333,7 +333,7 @@
             }
         }
         fetchWeather();
-        setInterval(fetchWeather, 600000); // Atualiza a cada 10 min
+        setInterval(fetchWeather, 1000); // Atualiza a cada 1 min
 
 
         // ==========================================
