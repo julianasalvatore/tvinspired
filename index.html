@@ -24,7 +24,7 @@
         width: 100%;
         height: 100%; 
         border: none;
-        z-index: 1; /* Fica no fundo */
+        z-index: 1;
     }
 
     /* 2. BARRA DE INFORMAÇÕES (OVERLAY) */
@@ -33,22 +33,18 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 13%; /* Altura da barra */
+        height: 13%; 
         min-height: 90px;
-        z-index: 999; /* Garante que fique SOBRE o slide */
-        
-        background-color: #0872eb; /* Azul Inspired */
+        z-index: 999; 
+        background-color: #0872eb; 
         color: #fff;
-        
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 2rem;
-        
         box-shadow: 0 -4px 20px rgba(0,0,0,0.4); 
     }
 
-    /* --- GRUPO ESQUERDA (Logo e Data) --- */
     .left-group {
         display: flex;
         align-items: center;
@@ -97,7 +93,6 @@
         font-weight: 800;
         line-height: 1.1;
         text-transform: capitalize;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
 
     .date-line {
@@ -108,22 +103,24 @@
 
     /* --- CENTRO (Notícias / Marquee) --- */
     .marquee-container {
-        flex: 1; /* Ocupa todo o espaço disponível no meio */
+        flex: 1;
         height: 100%;
         position: relative;
         overflow: hidden;
         display: flex;
         align-items: center;
-        mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
-        -webkit-mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
+        /* Suaviza as bordas do texto ao entrar/sair */
+        mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
     }
 
     .marquee-content {
         position: absolute;
         white-space: nowrap;
+        display: inline-block;
         will-change: transform;
         color: #fff;
-        font-size: 3vh; 
+        font-size: 3.5vh; 
         font-weight: 600;
         letter-spacing: 0.5px;
         text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
@@ -131,11 +128,10 @@
 
     .separator {
         color: rgba(255,255,255,0.5);
-        margin: 0 30px;
+        margin: 0 40px;
         font-weight: 300;
     }
 
-    /* --- GRUPO DIREITA (Clima e Hora) --- */
     .right-group {
         display: flex;
         align-items: center;
@@ -153,15 +149,10 @@
     }
 
     .weather-icon-box img {
-        width: 42px;
-        height: 42px;
-        filter: brightness(0) invert(1) drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
-        margin-right: 10px;
-    }
-
-    .weather-text {
-        text-align: left;
-        color: #fff;
+        width: 50px;
+        height: 50px;
+        filter: brightness(0) invert(1);
+        margin-right: 5px;
     }
 
     .weather-temp {
@@ -173,7 +164,6 @@
     .weather-city {
         font-size: 1.5vh;
         font-weight: 600;
-        margin-top: 3px;
         opacity: 0.9;
     }
 
@@ -182,47 +172,33 @@
         font-size: 5vh;
         font-weight: 700;
         font-variant-numeric: tabular-nums;
-        line-height: 1;
         margin-left: 20px;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     }
 
-    /* Animação do Letreiro */
     @keyframes scrollLeft {
-        0% { transform: translateX(100%); }
+        0% { transform: translateX(100vw); }
         100% { transform: translateX(-100%); }
     }
-
 </style>
 </head>
 <body>
 
-    <iframe 
-        id="slide-frame"
-        class="presentation-frame"
-        src="" 
-        allowfullscreen="true" 
-        mozallowfullscreen="true" 
-        webkitallowfullscreen="true">
-    </iframe>
+    <iframe id="slide-frame" class="presentation-frame" src="" allowfullscreen="true"></iframe>
 
     <div class="info-bar">
-        
         <div class="left-group">
             <div class="logo-box">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4qKiSKB6nqMH1cAvy1qJZ0Xi2vis3FXWmlw&s" alt="Logo Eleva">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4qKiSKB6nqMH1cAvy1qJZ0Xi2vis3FXWmlw&s" alt="Logo">
             </div>
             <div class="vertical-divider"></div>
             <div class="date-display">
-                <div id="day-line" class="day-line">Carregando...</div>
+                <div id="day-line" class="day-line">...</div>
                 <div id="date-line" class="date-line">...</div>
             </div>
         </div>
         
         <div class="marquee-container">
-            <div id="marquee-text" class="marquee-content">
-                Carregando Notícias...
-            </div>
+            <div id="marquee-text" class="marquee-content">Carregando Notícias...</div>
         </div>
         
         <div class="right-group">
@@ -236,62 +212,33 @@
                 </div>
             </div>
             <div class="vertical-divider"></div>
-            <div class="time-display" id="time-container">
-                --:--:--
-            </div>
+            <div class="time-display" id="time-container">--:--</div>
         </div>
-
     </div>
 
     <script>
         // ==========================================
         // CONFIGURAÇÕES GERAIS
         // ==========================================
-        // ID ATUALIZADO DO GOOGLE SHEETS
         const SHEET_ID = '1MFHtG8r4pwrY_tA2yFWEC6gZISJgO05e'; 
-        const TEMPO_ROLAGEM = 35; // Segundos para a notícia atravessar a tela
-        
-        // ==========================================
-        // 1. SLIDES (Google Presentation)
-        // ==========================================
+        const VELOCIDADE_PX_SEG = 120; // AJUSTE AQUI: quanto menor, mais lento. 100-150 é o ideal.
+
+        // Slides
         function getQueryParam(param, defaultValue) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param) || defaultValue;
         }
-
-        // URL DE EMBED ATUALIZADA
         const defaultSlideUrl = "https://docs.google.com/presentation/d/11YYUb321jAQMPU1xfhPQKa35464Iow3N/embed?start=true&loop=true&rm=minimal&delayms=10000";
-        const slideUrl = getQueryParam('embed', defaultSlideUrl);
-        const refreshInterval = parseInt(getQueryParam('refresh', '3600000'), 10);
+        document.getElementById('slide-frame').src = getQueryParam('embed', defaultSlideUrl);
 
-        document.getElementById('slide-frame').src = slideUrl;
-
-
-        // ==========================================
-        // 2. RELÓGIO & DATA (Brasília)
-        // ==========================================
-        function formatDiaSemana(diaBruto){
-            // Capitaliza o dia (ex: quinta-feira -> Quinta-Feira)
-            return diaBruto.toLowerCase().split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('-');
-        }
-
+        // Relógio
         function updateClock() {
             const now = new Date();
             const TIMEZONE = 'America/Sao_Paulo';
-            
-            // Dia da semana
             let rawDay = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', timeZone: TIMEZONE }).format(now);
-            const dayFormatted = formatDiaSemana(rawDay);
-            
-            // Data completa
-            const dateRest = new Intl.DateTimeFormat('pt-BR', { 
-                day: 'numeric', month: 'long', year: 'numeric', timeZone: TIMEZONE 
-            }).format(now);
-            
-            // Hora
-            const timeString = now.toLocaleTimeString('pt-BR', {
-                hour: '2-digit', minute: '2-digit', hour12: false, timeZone: TIMEZONE
-            });
+            const dayFormatted = rawDay.charAt(0).toUpperCase() + rawDay.slice(1);
+            const dateRest = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: TIMEZONE }).format(now);
+            const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: TIMEZONE });
 
             document.getElementById('day-line').textContent = dayFormatted;
             document.getElementById('date-line').textContent = dateRest;
@@ -300,126 +247,73 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-
-        // ==========================================
-        // 3. CLIMA (OpenWeather - Rio de Janeiro)
-        // ==========================================
+        // Clima
         async function fetchWeather() {
             const apiKey = "ff0a9d4e6f632ea18d6ce175c676d736"; 
-            // Corrigido: Adicionado aspas e crases que faltavam
             const url = `https://api.openweathermap.org/data/2.5/weather?q=Rio de Janeiro&appid=${apiKey}&units=metric&lang=pt_br`;
-
             try {
                 const response = await fetch(url);
-                if (!response.ok) throw new Error("Erro API Clima");
                 const data = await response.json();
-                
-                const temp = Math.round(data.main.temp);
-                const iconCode = data.weather[0].icon;
-                
-                // Corrigido: Sintaxe de Template String
-                document.getElementById('weather-temp').textContent = `${temp}°C`;
-                document.getElementById('weather-icon-img').src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-                
-            } catch (error) {
-                console.error("Erro ao buscar clima:", error);
-            }
+                document.getElementById('weather-temp').textContent = `${Math.round(data.main.temp)}°C`;
+                document.getElementById('weather-icon-img').src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+            } catch (e) { console.error("Erro clima"); }
         }
         fetchWeather();
-        setInterval(fetchWeather, 600000); // Atualiza a cada 10 min
+        setInterval(fetchWeather, 600000);
 
-
-        // ==========================================
-        // 4. NOTÍCIAS (Google Sheets - Ticker)
-        // ==========================================
-        // Corrigido: Sintaxe de Template String
-        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+        // Notícias com Velocidade Dinâmica
         const marqueeElement = document.getElementById('marquee-text');
         let lastContentSignature = "";
 
         async function fetchNews() {
             try {
-                // Corrigido: Timestamp para evitar cache
-                const response = await fetch(`${SHEET_URL}&t=${Date.now()}`);
+                const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
+                const response = await fetch(SHEET_URL);
                 const text = await response.text();
-                
-                // Processamento CSV básico
                 const lines = text.split('\n');
                 const newsItems = [];
 
-                // Pula a primeira linha (cabeçalho)
                 for(let i = 1; i < lines.length; i++) {
                     let line = lines[i].trim();
-                    // Remove aspas de CSV
                     if(line.startsWith('"') && line.endsWith('"')) line = line.substring(1, line.length - 1);
                     line = line.replace(/""/g, '"');
-                    
                     if(line.length > 0) newsItems.push(line);
                 }
 
-                if(newsItems.length === 0) newsItems.push("Bem-vindo à Inspired News");
+                const newContentHtml = newsItems.length > 0 ? newsItems.join('<span class="separator">|</span>') : "Bem-vindo";
 
-                // Junta as notícias com o separador
-                const newContentHtml = newsItems.join('<span class="separator">|</span>');
-
-                // Só atualiza o DOM se houver mudança real no texto
                 if (newContentHtml !== lastContentSignature) {
                     lastContentSignature = newContentHtml;
-                    
                     marqueeElement.innerHTML = newContentHtml;
                     
-                    // Reinicia animação CSS
-                    marqueeElement.style.animation = 'none';
-                    marqueeElement.offsetHeight; /* Trigger reflow */
-                    // Corrigido: Sintaxe da animação
-                    marqueeElement.style.animation = `scrollLeft ${TEMPO_ROLAGEM}s linear infinite`;
+                    // CÁLCULO DINÂMICO:
+                    // Espera o navegador renderizar para medir a largura
+                    setTimeout(() => {
+                        const larguraTexto = marqueeElement.offsetWidth;
+                        const larguraTela = window.innerWidth;
+                        // O tempo é a distância total (tela + texto) dividida pela velocidade
+                        const duracao = (larguraTexto + larguraTela) / VELOCIDADE_PX_SEG;
+                        
+                        marqueeElement.style.animation = 'none';
+                        marqueeElement.offsetHeight; /* trigger reflow */
+                        marqueeElement.style.animation = `scrollLeft ${duracao}s linear infinite`;
+                    }, 100);
                 }
-
-            } catch (error) {
-                console.error("Erro notícias:", error);
-            }
+            } catch (e) { console.error("Erro notícias"); }
         }
         
         fetchNews();
-        setInterval(fetchNews, 4000); // Verifica Google Sheets a cada 4 segundos
+        setInterval(fetchNews, 10000); // Verifica novos textos a cada 10 segundos
 
-
-        // ==========================================
-        // 5. REFRESH DE SEGURANÇA
-        // ==========================================
-        // Soft refresh do iframe (mantém a página viva)
-        setInterval(() => {
-            console.log("Atualizando slide...");
-            const currentSrc = document.getElementById('slide-frame').src;
-            document.getElementById('slide-frame').src = currentSrc;
-        }, refreshInterval);
-
-        // Hard refresh da página (1x ao dia para limpar memória)
-        setTimeout(() => {
-            window.location.reload(true);
-        }, 86400000); // 24h
-
-    </script>
-    <script>
-    function openFullScreen() {
-        const elem = document.documentElement;
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE/Edge antigo */
-            elem.msRequestFullscreen();
+        // Fullscreen
+        function openFullScreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) elem.requestFullscreen();
+            else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
         }
-    }
-
-    // TENTA ENTRAR EM FULLSCREEN SOZINHO AO CARREGAR
-    window.addEventListener("load", () => {
-        openFullScreen();
-
-        // Algumas TVs bloqueiam fullscreen automático — tenta de novo após 2s
-        setTimeout(openFullScreen, 2000);
-    });
+        window.addEventListener("load", () => {
+            setTimeout(openFullScreen, 2000);
+        });
     </script>
-
 </body>
 </html>
