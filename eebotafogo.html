@@ -170,7 +170,9 @@ html, body {
         <div class="logo-box">
             <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
         </div>
+
         <div class="vertical-divider"></div>
+
         <div class="date-display">
             <div id="day-line" class="day-line">...</div>
             <div id="date-line" class="date-line">...</div>
@@ -182,97 +184,173 @@ html, body {
     </div>
 
     <div class="right-group">
+
         <div class="weather-container">
             <div class="weather-icon-box">
                 <img id="weather-icon-img">
             </div>
+
             <div>
                 <div id="weather-temp" class="weather-temp">--°C</div>
                 <div class="weather-city">Rio de Janeiro</div>
             </div>
         </div>
+
         <div class="vertical-divider"></div>
+
         <div id="time-container" class="time-display">--:--</div>
+
     </div>
 
 </div>
 
 <script>
+
 /* CONFIG */
+
 const SHEET_ID = '1CZ0NkBomU3prL1EmSk_baavwJRQySmjzRTf0HdLPMvo';
+
 const SLIDE_URL = 'https://docs.google.com/presentation/d/1DGoAjEoJlrCjzNGgVUDsi8ehTzpwxPJbt6-muG5Ry3k/embed?start=true&loop=true&rm=minimal&delayms=60000';
+
 const VELOCIDADE_PX_SEG = 120;
 
-/* SLIDES */
-document.getElementById('slide-frame').src = SLIDE_URL;
+
+/* SLIDES BOTAGOFO */
+
+const iframe = document.getElementById("slide-frame")
+
+function startSlides(){
+    iframe.src = SLIDE_URL
+}
+
+startSlides()
+
+function restartSlides(){
+    iframe.src = ""
+    setTimeout(()=>{
+        iframe.src = SLIDE_URL
+    },500)
+}
+
+/* reinicia a cada 10 minutos */
+setInterval(restartSlides,600000)
+
+
 
 /* DATA / HORA */
-function updateClock() {
-    const now = new Date();
-    const tz = 'America/Sao_Paulo';
+
+function updateClock(){
+
+    const now = new Date()
+    const tz = 'America/Sao_Paulo'
+
     document.getElementById('day-line').textContent =
-        new Intl.DateTimeFormat('pt-BR',{weekday:'long',timeZone:tz}).format(now);
+    new Intl.DateTimeFormat('pt-BR',{weekday:'long',timeZone:tz}).format(now)
+
     document.getElementById('date-line').textContent =
-        new Intl.DateTimeFormat('pt-BR',{day:'numeric',month:'long',year:'numeric',timeZone:tz}).format(now);
+    new Intl.DateTimeFormat('pt-BR',{day:'numeric',month:'long',year:'numeric',timeZone:tz}).format(now)
+
     document.getElementById('time-container').textContent =
-        now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:tz});
+    now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:tz})
+
 }
-setInterval(updateClock,1000);
-updateClock();
+
+setInterval(updateClock,1000)
+updateClock()
+
+
 
 /* CLIMA */
-async function fetchWeather(){
-    const apiKey="ff0a9d4e6f632ea18d6ce175c676d736";
-    const url=`https://api.openweathermap.org/data/2.5/weather?q=Rio de Janeiro&appid=${apiKey}&units=metric&lang=pt_br`;
-    const r=await fetch(url);
-    const d=await r.json();
-    document.getElementById('weather-temp').textContent=`${Math.round(d.main.temp)}°C`;
-    document.getElementById('weather-icon-img').src=`https://openweathermap.org/img/wn/${d.weather[0].icon}@2x.png`;
-}
-fetchWeather();
-setInterval(fetchWeather,600000);
 
-/* NOTÍCIAS – IGUAL AO PRIMEIRO */
-const marquee = document.getElementById('marquee-text');
-let lastSignature="";
+async function fetchWeather(){
+
+const apiKey="ff0a9d4e6f632ea18d6ce175c676d736"
+
+const url=`https://api.openweathermap.org/data/2.5/weather?q=Rio de Janeiro&appid=${apiKey}&units=metric&lang=pt_br`
+
+const r=await fetch(url)
+const d=await r.json()
+
+document.getElementById('weather-temp').textContent=`${Math.round(d.main.temp)}°C`
+
+document.getElementById('weather-icon-img').src=
+`https://openweathermap.org/img/wn/${d.weather[0].icon}@2x.png`
+
+}
+
+fetchWeather()
+setInterval(fetchWeather,600000)
+
+
+
+/* NOTÍCIAS */
+
+const marquee = document.getElementById('marquee-text')
+let lastSignature=""
 
 async function fetchNews(){
-    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
-    const r=await fetch(url);
-    const t=await r.text();
-    const lines=t.split('\n').slice(1);
-    const items=lines.map(l=>l.replace(/^"|"$/g,'').replace(/""/g,'"').trim()).filter(Boolean);
-    const html=(items.length?items:["Bem-vindo à Escola Eleva"]).join('<span class="separator">|</span>');
 
-    if(html.trim()!==lastSignature){
-        lastSignature=html;
-        marquee.innerHTML=html;
+const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
 
-        setTimeout(()=>{
-            const wText=marquee.offsetWidth;
-            const wScreen=window.innerWidth;
-            const dur=(wText+wScreen)/VELOCIDADE_PX_SEG;
-            marquee.style.animation='none';
-            marquee.offsetHeight;
-            marquee.style.animation=`scrollLeft ${dur}s linear infinite`;
-        },100);
-    }
+const r=await fetch(url)
+const t=await r.text()
+
+const lines=t.split('\n').slice(1)
+
+const items=lines
+.map(l=>l.replace(/^"|"$/g,'').replace(/""/g,'"').trim())
+.filter(Boolean)
+
+const html=(items.length?items:["Bem-vindo à Escola Eleva"])
+.join('<span class="separator">|</span>')
+
+if(html.trim()!==lastSignature){
+
+lastSignature=html
+marquee.innerHTML=html
+
+setTimeout(()=>{
+
+const wText=marquee.offsetWidth
+const wScreen=window.innerWidth
+const dur=(wText+wScreen)/VELOCIDADE_PX_SEG
+
+marquee.style.animation='none'
+marquee.offsetHeight
+
+marquee.style.animation=`scrollLeft ${dur}s linear infinite`
+
+},100)
+
 }
-fetchNews();
-setInterval(fetchNews,30000);
 
-/* FULLSCREEN – MESMO COMPORTAMENTO DO PRIMEIRO */
+}
+
+fetchNews()
+setInterval(fetchNews,30000)
+
+
+
+/* FULLSCREEN */
+
 function openFullScreen(){
-    const el=document.documentElement;
-    if(el.requestFullscreen) el.requestFullscreen();
-    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+
+const el=document.documentElement
+
+if(el.requestFullscreen) el.requestFullscreen()
+else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen()
+
 }
 
-window.addEventListener('load',()=>setTimeout(openFullScreen,2000));
-document.body.addEventListener('click',openFullScreen);
+window.addEventListener('load',()=>setTimeout(openFullScreen,2000))
+document.body.addEventListener('click',openFullScreen)
+
+
 
 /* RELOAD DIÁRIO */
-setTimeout(()=>location.reload(true),86400000);
+
+setTimeout(()=>location.reload(true),86400000)
+
 </script>
 
 </body>
