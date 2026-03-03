@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Eleva News - Barra</title>
+<title>Eleva News - São Paulo</title>
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -12,15 +12,13 @@ html, body {
     width: 100%;
     height: 100%;
     background-color: #000;
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
     overflow: hidden;
 }
 
 /* SLIDE */
 .presentation-frame {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     border: none;
@@ -31,52 +29,45 @@ html, body {
 .info-bar {
     position: absolute;
     bottom: 0;
-    left: 0;
     width: 100%;
     height: 13%;
     min-height: 90px;
-    z-index: 999;
     background-color: #ff8e03;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 2rem;
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+    z-index: 999;
 }
 
 /* ESQUERDA */
 .left-group {
     display: flex;
     align-items: center;
-    height: 100%;
-    padding-right: 20px;
 }
 
 .logo-box {
-    background: #ffffff;
+    background: #fff;
     border-radius: 12px;
-    height: 75%;
-    aspect-ratio: 1/1;
+    height: 75px;
+    width: 75px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px;
     margin-right: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .logo-box img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+    max-width: 90%;
+    max-height: 90%;
 }
 
 .vertical-divider {
     width: 2px;
-    height: 60%;
-    background-color: rgba(255,255,255,0.3);
-    margin-right: 20px;
+    height: 50px;
+    background: rgba(255,255,255,0.4);
+    margin: 0 20px;
 }
 
 .date-display {
@@ -85,47 +76,39 @@ html, body {
 }
 
 .day-line {
-    font-size: 3.2vh;
-    font-weight: 800;
-    text-transform: capitalize;
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .date-line {
-    font-size: 1.8vh;
-    opacity: 0.95;
+    font-size: 14px;
 }
 
 /* MARQUEE */
 .marquee-container {
     flex: 1;
-    height: 100%;
-    position: relative;
     overflow: hidden;
+    position: relative;
+    height: 100%;
     display: flex;
     align-items: center;
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
 }
 
 .marquee-content {
     position: absolute;
     white-space: nowrap;
-    will-change: transform;
-    font-size: 3vh;
+    font-size: 22px;
     font-weight: 600;
 }
 
 .separator {
     margin: 0 30px;
-    opacity: 0.6;
 }
 
 /* DIREITA */
 .right-group {
     display: flex;
     align-items: center;
-    height: 100%;
-    padding-left: 20px;
 }
 
 .weather-container {
@@ -134,106 +117,91 @@ html, body {
     margin-right: 20px;
 }
 
-.weather-icon-box img {
-    width: 42px;
-    height: 42px;
-    filter: brightness(0) invert(1);
+.weather-container img {
+    width: 40px;
     margin-right: 10px;
+    filter: brightness(0) invert(1);
 }
 
 .weather-temp {
-    font-size: 3.5vh;
-    font-weight: 800;
-}
-
-.weather-city {
-    font-size: 1.5vh;
-    opacity: 0.9;
+    font-size: 22px;
+    font-weight: 700;
 }
 
 .time-display {
-    font-size: 5vh;
+    font-size: 40px;
     font-weight: 700;
-    font-variant-numeric: tabular-nums;
     margin-left: 20px;
 }
 
 /* ANIMAÇÃO */
 @keyframes scrollLeft {
-    0% { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
+    from { transform: translateX(100vw); }
+    to { transform: translateX(-100%); }
 }
 </style>
 </head>
 
 <body>
 
-<iframe id="slide-frame" class="presentation-frame" allowfullscreen></iframe>
+<iframe class="presentation-frame"
+src="https://docs.google.com/presentation/d/1zLaYJiXkRtY5oeEn-kltcUWGZF6sG8DK/embed?start=true&loop=true&rm=minimal&delayms=60000"
+allowfullscreen>
+</iframe>
 
 <div class="info-bar">
 
-    <div class="left-group">
-        <div class="logo-box">
-            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png" alt="Logo Eleva">
-        </div>
-        <div class="vertical-divider"></div>
-        <div class="date-display">
-            <div id="day-line" class="day-line">...</div>
-            <div id="date-line" class="date-line">...</div>
-        </div>
-    </div>
+<div class="left-group">
+<div class="logo-box">
+<img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
+</div>
 
-    <div class="marquee-container">
-        <div id="marquee-text" class="marquee-content">Carregando notícias...</div>
-    </div>
+<div class="vertical-divider"></div>
 
-    <div class="right-group">
-        <div class="weather-container">
-            <div class="weather-icon-box">
-                <img id="weather-icon-img" src="">
-            </div>
-            <div>
-                <div class="weather-temp" id="weather-temp">--°C</div>
-                <div class="weather-city">Rio de Janeiro - RJ</div>
-            </div>
-        </div>
-        <div class="vertical-divider"></div>
-        <div class="time-display" id="time-container">--:--</div>
-    </div>
+<div class="date-display">
+<div id="day-line" class="day-line"></div>
+<div id="date-line" class="date-line"></div>
+</div>
+</div>
 
+<div class="marquee-container">
+<div id="marquee-text" class="marquee-content">Carregando notícias...</div>
+</div>
+
+<div class="right-group">
+
+<div class="weather-container">
+<img id="weather-icon">
+<div class="weather-temp" id="weather-temp">--°C</div>
+</div>
+
+<div class="vertical-divider"></div>
+
+<div id="time-display" class="time-display"></div>
+
+</div>
 </div>
 
 <script>
 /* CONFIG */
-const SHEET_ID = '1eqxuVOCbTQU4zBfzGSM67VyNSSddPC9V';
-const VELOCIDADE_PX_SEG = 120;
-const CLIMA_INTERVALO = 10 * 60 * 1000;
-const NEWS_INTERVALO = 60 * 1000;
-
-/* SLIDE (mantém flexibilidade) */
-function getQueryParam(param, defaultValue) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param) || defaultValue;
-}
-
-const defaultSlideUrl = "https://docs.google.com/presentation/d/1BfDmmXdLbYf4pwT3qr3zT3Vi83jXSxVh/embed?start=true&loop=true&rm=minimal&delayms=10000";
-const slideUrl = getQueryParam('embed', defaultSlideUrl);
-const refreshInterval = parseInt(getQueryParam('refresh', '3600000'), 10);
-
-document.getElementById('slide-frame').src = slideUrl;
+const SHEET_ID = "1eqxuVOCbTQU4zBfzGSM67VyNSSddPC9V";
+const NEWS_INTERVAL = 30000;
+const WEATHER_INTERVAL = 600000;
+const VELOCIDADE = 120;
 
 /* RELÓGIO */
 function updateClock() {
     const now = new Date();
-    const tz = 'America/Sao_Paulo';
+    const options = { timeZone: "America/Sao_Paulo" };
 
-    const day = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', timeZone: tz }).format(now);
-    const date = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: tz }).format(now);
-    const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: tz });
+    document.getElementById("day-line").textContent =
+        now.toLocaleDateString("pt-BR", { weekday: "long", ...options });
 
-    document.getElementById('day-line').textContent = day.charAt(0).toUpperCase() + day.slice(1);
-    document.getElementById('date-line').textContent = date;
-    document.getElementById('time-container').textContent = time;
+    document.getElementById("date-line").textContent =
+        now.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric", ...options });
+
+    document.getElementById("time-display").textContent =
+        now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", ...options });
 }
 setInterval(updateClock, 1000);
 updateClock();
@@ -242,72 +210,68 @@ updateClock();
 async function fetchWeather() {
     try {
         const apiKey = "ff0a9d4e6f632ea18d6ce175c676d736";
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=Rio de Janeiro&appid=${apiKey}&units=metric&lang=pt_br`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error();
-        const data = await res.json();
-        document.getElementById('weather-temp').textContent = `${Math.round(data.main.temp)}°C`;
-        document.getElementById('weather-icon-img').src =
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=Sao Paulo,BR&appid=${apiKey}&units=metric&lang=pt_br`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        document.getElementById("weather-temp").textContent =
+            Math.round(data.main.temp) + "°C";
+
+        document.getElementById("weather-icon").src =
             `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+
     } catch {}
 }
 fetchWeather();
-setInterval(fetchWeather, CLIMA_INTERVALO);
+setInterval(fetchWeather, WEATHER_INTERVAL);
 
 /* NOTÍCIAS */
-const marquee = document.getElementById('marquee-text');
-let lastSignature = "";
+let lastContent = "";
+const marquee = document.getElementById("marquee-text");
 
 async function fetchNews() {
     try {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
-        const res = await fetch(url);
-        const text = await res.text();
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0&cache=${Date.now()}`;
 
-        const lines = text.split('\n').slice(1);
-        const news = lines
-            .map(l => l.replace(/^"|"$/g, '').replace(/""/g, '"').trim())
+        const response = await fetch(url, { cache: "no-store" });
+        const csv = await response.text();
+
+        const rows = csv.split("\n").slice(1);
+
+        const news = rows
+            .map(row => row.replace(/^"|"$/g, "").trim())
             .filter(Boolean);
 
-        const content = (news.length ? news : ["Bem-vindo à Escola Eleva"])
-            .join('<span class="separator">|</span>');
+        const content = news.length
+            ? news.join('<span class="separator">|</span>')
+            : "Bem-vindo à Escola Eleva São Paulo";
 
-        if (content !== lastSignature) {
-            lastSignature = content;
+        if (content !== lastContent) {
+            lastContent = content;
             marquee.innerHTML = content;
 
             setTimeout(() => {
-                const wText = marquee.offsetWidth;
-                const wScreen = window.innerWidth;
-                const duration = (wText + wScreen) / VELOCIDADE_PX_SEG;
+                const textWidth = marquee.offsetWidth;
+                const screenWidth = window.innerWidth;
+                const duration = (textWidth + screenWidth) / VELOCIDADE;
 
-                marquee.style.animation = 'none';
+                marquee.style.animation = "none";
                 marquee.offsetHeight;
-                marquee.style.animation = `scrollLeft ${duration}s linear infinite`;
-            }, 120);
+                marquee.style.animation =
+                    `scrollLeft ${duration}s linear infinite`;
+            }, 200);
         }
-    } catch {}
+
+    } catch (error) {
+        console.log("Erro planilha:", error);
+    }
 }
 fetchNews();
-setInterval(fetchNews, NEWS_INTERVALO);
-
-/* REFRESH SLIDE */
-setInterval(() => {
-    document.getElementById('slide-frame').src = slideUrl;
-}, refreshInterval);
+setInterval(fetchNews, NEWS_INTERVAL);
 
 /* RELOAD 24H */
 setTimeout(() => location.reload(true), 86400000);
-
-/* FULLSCREEN */
-function openFullScreen() {
-    const elem = document.documentElement;
-    if (elem.requestFullscreen) elem.requestFullscreen();
-    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
-}
-window.addEventListener("load", () => {
-    setTimeout(openFullScreen, 2000);
-});
 </script>
 
 </body>

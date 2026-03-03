@@ -216,7 +216,7 @@ function getQueryParam(param, defaultValue) {
     return urlParams.get(param) || defaultValue;
 }
 
-const defaultSlideUrl = "https://docs.google.com/presentation/d/1zLaYJiXkRtY5oeEn-kltcUWGZF6sG8DK/embed?start=true&loop=true&rm=minimal&delayms=10000";
+const defaultSlideUrl = "https://docs.google.com/presentation/d/1zLaYJiXkRtY5oeEn-kltcUWGZF6sG8DK/embed?start=true&loop=true&rm=minimal&delayms=60000";
 const slideUrl = getQueryParam('embed', defaultSlideUrl);
 const refreshInterval = parseInt(getQueryParam('refresh', '3600000'), 10);
 
