@@ -2,47 +2,278 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Painel Slides</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Eleva News - Barra</title>
 
 <style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+
 html,body{
-margin:0;
+width:100%;
 height:100%;
 background:#000;
+font-family:"Segoe UI",Roboto,Arial;
 overflow:hidden;
 }
 
-iframe{
+/* SLIDES */
+
+.presentation-frame{
 position:absolute;
+top:0;
+left:0;
 width:100%;
 height:100%;
-border:0;
+border:none;
+z-index:1;
 }
+
+/* BARRA INFERIOR */
+
+.info-bar{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:13%;
+min-height:90px;
+background:#ff8e03;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 2rem;
+z-index:999;
+}
+
+/* LOGO */
+
+.left-group{
+display:flex;
+align-items:center;
+}
+
+.logo-box{
+background:#fff;
+border-radius:10px;
+height:65px;
+width:65px;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-right:20px;
+}
+
+.logo-box img{
+max-width:100%;
+max-height:100%;
+}
+
+.date-display{
+display:flex;
+flex-direction:column;
+}
+
+.day-line{
+font-size:2.6vh;
+font-weight:700;
+}
+
+.date-line{
+font-size:1.6vh;
+}
+
+/* NEWS */
+
+.marquee-container{
+flex:1;
+overflow:hidden;
+margin:0 40px;
+}
+
+.marquee-content{
+white-space:nowrap;
+font-size:2.5vh;
+font-weight:600;
+animation:scroll 40s linear infinite;
+}
+
+.separator{
+margin:0 30px;
+opacity:.6;
+}
+
+@keyframes scroll{
+0%{transform:translateX(100%)}
+100%{transform:translateX(-100%)}
+}
+
+/* CLIMA + HORA */
+
+.right-group{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.weather{
+font-size:2.5vh;
+font-weight:700;
+}
+
+.time-display{
+font-size:4vh;
+font-weight:800;
+}
+
 </style>
 </head>
 
 <body>
 
-<iframe id="slides"
-src="https://docs.google.com/presentation/d/1BfDmmXdLbYf4pwT3qr3zT3Vi83jXSxVh/embed?start=true&loop=true&delayms=60000"
-allowfullscreen>
-</iframe>
+<iframe id="slide-frame" class="presentation-frame"></iframe>
+
+<div class="info-bar">
+
+<div class="left-group">
+
+<div class="logo-box">
+<img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
+</div>
+
+<div class="date-display">
+<div id="day-line" class="day-line"></div>
+<div id="date-line" class="date-line"></div>
+</div>
+
+</div>
+
+<div class="marquee-container">
+<div id="marquee-text" class="marquee-content">Carregando notícias...</div>
+</div>
+
+<div class="right-group">
+
+<div id="weather-temp" class="weather">--°C</div>
+
+<div class="time-display" id="time-container"></div>
+
+</div>
+
+</div>
 
 <script>
 
-/* reinicia slides periodicamente para evitar travamento */
+/* CONFIG */
 
-setInterval(()=>{
-document.getElementById("slides").src =
-"https://docs.google.com/presentation/d/1BfDmmXdLbYf4pwT3qr3zT3Vi83jXSxVh/embed?start=true&loop=true&delayms=60000&t="+Date.now()
-},900000)
+const SLIDE_URL="https://docs.google.com/presentation/d/1BfDmmXdLbYf4pwT3qr3zT3Vi83jXSxVh/embed?start=true&loop=true&delayms=60000"
 
-/* reload completo a cada 6h */
+const SHEET_ID="1eqxuVOCbTQU4zBfzGSM67VyNSSddPC9V"
 
-setInterval(()=>{
-location.reload()
-},21600000)
+const WEATHER_API="https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
+
+/* SLIDES */
+
+function loadSlides(){
+
+document.getElementById("slide-frame").src=
+SLIDE_URL+"&t="+Date.now()
+
+}
+
+loadSlides()
+
+/* reinicia slides a cada 15 min */
+
+setInterval(loadSlides,900000)
+
+/* reload total a cada 6h */
+
+setInterval(()=>location.reload(),21600000)
+
+/* RELÓGIO */
+
+function updateClock(){
+
+const now=new Date()
+
+const day=now.toLocaleDateString("pt-BR",{weekday:"long"})
+const date=now.toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"})
+const time=now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})
+
+document.getElementById("day-line").textContent=day
+document.getElementById("date-line").textContent=date
+document.getElementById("time-container").textContent=time
+
+}
+
+setInterval(updateClock,1000)
+
+updateClock()
+
+/* CLIMA */
+
+async function fetchWeather(){
+
+try{
+
+const res=await fetch(WEATHER_API)
+const data=await res.json()
+
+const temp=Math.round(data.main.temp)+"°C"
+
+document.getElementById("weather-temp").textContent=temp
+
+}catch{}
+
+}
+
+fetchWeather()
+setInterval(fetchWeather,600000)
+
+/* NEWS GOOGLE SHEETS */
+
+async function fetchNews(){
+
+try{
+
+const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
+
+const res=await fetch(url)
+
+const text=await res.text()
+
+const lines=text.split("\n").slice(1)
+
+const news=lines
+.map(l=>l.replace(/"/g,"").trim())
+.filter(Boolean)
+
+document.getElementById("marquee-text").innerHTML=
+news.join('<span class="separator">|</span>')
+
+}catch{}
+
+}
+
+fetchNews()
+
+setInterval(fetchNews,60000)
+
+/* FULLSCREEN */
+
+function openFullscreen(){
+
+const elem=document.documentElement
+
+if(elem.requestFullscreen)elem.requestFullscreen()
+else if(elem.webkitRequestFullscreen)elem.webkitRequestFullscreen()
+
+}
+
+setTimeout(openFullscreen,2000)
 
 </script>
 
