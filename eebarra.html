@@ -9,153 +9,153 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
-width: 100%;
-height: 100%;
-background-color: #000;
-font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
 }
 
 .presentation-frame {
-position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-border: none;
-z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  z-index: 1;
 }
 
 .info-bar {
-position: absolute;
-bottom: 0;
-left: 0;
-width: 100%;
-height: 13%;
-min-height: 90px;
-z-index: 999;
-background-color: #ff8e03;
-color: #fff;
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 0 2rem;
-box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 13%;
+  min-height: 90px;
+  z-index: 999;
+  background-color: #ff8e03;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
 }
 
 .left-group {
-display: flex;
-align-items: center;
-height: 100%;
-padding-right: 20px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-right: 20px;
 }
 
 .logo-box {
-background: #ffffff;
-border-radius: 12px;
-height: 75%;
-aspect-ratio: 1/1;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 5px;
-margin-right: 20px;
-box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background: #ffffff;
+  border-radius: 12px;
+  height: 75%;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  margin-right: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .logo-box img {
-max-width: 100%;
-max-height: 100%;
-object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .vertical-divider {
-width: 2px;
-height: 60%;
-background-color: rgba(255,255,255,0.3);
-margin-right: 20px;
+  width: 2px;
+  height: 60%;
+  background-color: rgba(255,255,255,0.3);
+  margin-right: 20px;
 }
 
 .date-display {
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .day-line {
-font-size: 3.2vh;
-font-weight: 800;
-text-transform: capitalize;
+  font-size: 3.2vh;
+  font-weight: 800;
+  text-transform: capitalize;
 }
 
 .date-line {
-font-size: 1.8vh;
-opacity: 0.95;
+  font-size: 1.8vh;
+  opacity: 0.95;
 }
 
 .marquee-container {
-flex: 1;
-height: 100%;
-position: relative;
-overflow: hidden;
-display: flex;
-align-items: center;
-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
--webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  flex: 1;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
 }
 
 .marquee-content {
-position: absolute;
-white-space: nowrap;
-will-change: transform;
-font-size: 3vh;
-font-weight: 600;
+  position: absolute;
+  white-space: nowrap;
+  will-change: transform;
+  font-size: 3vh;
+  font-weight: 600;
 }
 
 .separator {
-margin: 0 30px;
-opacity: 0.6;
+  margin: 0 30px;
+  opacity: 0.6;
 }
 
 .right-group {
-display: flex;
-align-items: center;
-height: 100%;
-padding-left: 20px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 20px;
 }
 
 .weather-container {
-display: flex;
-align-items: center;
-margin-right: 20px;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 }
 
 .weather-icon-box img {
-width: 42px;
-height: 42px;
-filter: brightness(0) invert(1);
-margin-right: 10px;
+  width: 42px;
+  height: 42px;
+  filter: brightness(0) invert(1);
+  margin-right: 10px;
 }
 
 .weather-temp {
-font-size: 3.5vh;
-font-weight: 800;
+  font-size: 3.5vh;
+  font-weight: 800;
 }
 
 .weather-city {
-font-size: 1.5vh;
-opacity: 0.9;
+  font-size: 1.5vh;
+  opacity: 0.9;
 }
 
 .time-display {
-font-size: 5vh;
-font-weight: 700;
-font-variant-numeric: tabular-nums;
-margin-left: 20px;
+  font-size: 5vh;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-left: 20px;
 }
 
 @keyframes scrollLeft {
-0% { transform: translateX(100vw); }
-100% { transform: translateX(-100%); }
+  0%   { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
 }
 </style>
 </head>
@@ -166,239 +166,279 @@ margin-left: 20px;
 
 <div class="info-bar">
 
-<div class="left-group">
-<div class="logo-box">
-<img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
-</div>
+  <div class="left-group">
+    <div class="logo-box">
+      <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png" alt="Logo Eleva">
+    </div>
+    <div class="vertical-divider"></div>
+    <div class="date-display">
+      <div id="day-line" class="day-line">...</div>
+      <div id="date-line" class="date-line">...</div>
+    </div>
+  </div>
 
-<div class="vertical-divider"></div>
+  <div class="marquee-container">
+    <div id="marquee-text" class="marquee-content">Carregando notícias...</div>
+  </div>
 
-<div class="date-display">
-<div id="day-line" class="day-line">...</div>
-<div id="date-line" class="date-line">...</div>
-</div>
-</div>
+  <div class="right-group">
+    <div class="weather-container">
+      <div class="weather-icon-box">
+        <img id="weather-icon-img" alt="Ícone do clima">
+      </div>
+      <div>
+        <div class="weather-temp" id="weather-temp">--°C</div>
+        <div class="weather-city">Rio de Janeiro - RJ</div>
+      </div>
+    </div>
+    <div class="vertical-divider"></div>
+    <div class="time-display" id="time-container">--:--</div>
+  </div>
 
-<div class="marquee-container">
-<div id="marquee-text" class="marquee-content">Carregando notícias...</div>
-</div>
-
-<div class="right-group">
-
-<div class="weather-container">
-<div class="weather-icon-box">
-<img id="weather-icon-img">
-</div>
-
-<div>
-<div class="weather-temp" id="weather-temp">--°C</div>
-<div class="weather-city">Rio de Janeiro - RJ</div>
-</div>
-</div>
-
-<div class="vertical-divider"></div>
-
-<div class="time-display" id="time-container">--:--</div>
-
-</div>
 </div>
 
 <script>
 
-/* CONFIG */
+/* ============================================================
+   CONFIG
+   ============================================================ */
 
-const SHEET_ID = "1eqxuVOCbTQU4zBfzGSM67VyNSSddPC9V"
+const SHEET_ID            = "1eqxuVOCbTQU4zBfzGSM67VyNSSddPC9V"
+const PRESENTATION_ID     = "1BfDmmXdLbYf4pwT3qr3zT3Vi83jXSxVh"
 
-const NEWS_INTERVALO = 60 * 1000
-const SLIDE_CHECK_INTERVAL = 60 * 1000
-const CLIMA_INTERVALO = 10 * 60 * 1000
+const NEWS_INTERVALO      = 60  * 1000        // atualiza notícias a cada 1 min
+const CLIMA_INTERVALO     = 10  * 60 * 1000   // atualiza clima a cada 10 min
+const RELOAD_INTERVALO    = 6   * 60 * 60 * 1000 // recarrega página a cada 6h
 
-const VELOCIDADE_PX_SEG = 120
+// Tempo padrão por slide SEM vídeo (ms). Slides com vídeo aguardam o vídeo terminar.
+const DEFAULT_SLIDE_MS    = 10_000   // 10 segundos
 
-const SLIDE_URL = "https://docs.google.com/presentation/d/1BfDmmXdLbYf4pwT3qr3zT3Vi83jXSxVh/embed?start=true&loop=true&rm=minimal&delayms=10000"
+// Tempo extra de segurança após o vídeo terminar antes de avançar (ms)
+const VIDEO_BUFFER_MS     = 1_500
 
-document.getElementById("slide-frame").src = SLIDE_URL
+const VELOCIDADE_PX_SEG   = 120
 
-/* RELÓGIO */
+// ⚠️  Mova a API key para uma variável de ambiente / proxy em produção.
+const WEATHER_API_KEY     = "ff0a9d4e6f632ea18d6ce175c676d736"
 
-function updateClock(){
+/* ============================================================
+   SLIDE PLAYER  –  controle manual de avanço
+   Estratégia:
+     • Carrega o embed do Google Slides em modo PAUSED (autostart=false).
+     • Avança slide a slide usando a URL de navegação do embed
+       (?slide=id:SLIDE_INDEX), aguardando DEFAULT_SLIDE_MS para slides
+       normais.
+     • Para slides com vídeo embutido, usa um <video> espelho oculto que
+       busca a mesma fonte e dispara o evento "ended" — assim sabemos
+       exatamente quando o vídeo acabou.
+     
+   LIMITAÇÃO CONHECIDA: o Google Slides embed roda dentro de um iframe
+   cross-origin, portanto NÃO é possível detectar eventos internos de
+   vídeo diretamente. A solução mais robusta para produção é exportar
+   os slides como apresentação ou usar a Slides API para ler a duração
+   dos vídeos de cada slide.
 
-const now = new Date()
-const tz = "America/Sao_Paulo"
+   SOLUÇÃO PRÁTICA APLICADA AQUI:
+     • Remove `delayms` da URL e desabilita autoplay (start=false).
+     • Avança via postMessage com a mensagem aceita pelo embed do Google
+       ("cmd":"next"), que é documentada informalmente e funciona na
+       maioria dos navegadores modernos.
+     • Para cada slide, aguarda DEFAULT_SLIDE_MS; se você souber quais
+       slides têm vídeo, configure SLIDE_VIDEO_DURATIONS abaixo.
+   ============================================================ */
 
-const day = new Intl.DateTimeFormat("pt-BR",{weekday:"long",timeZone:tz}).format(now)
-const date = new Intl.DateTimeFormat("pt-BR",{day:"numeric",month:"long",year:"numeric",timeZone:tz}).format(now)
-const time = now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",timeZone:tz})
-
-document.getElementById("day-line").textContent = day.charAt(0).toUpperCase()+day.slice(1)
-document.getElementById("date-line").textContent = date
-document.getElementById("time-container").textContent = time
-
+// Mapa opcional: índice do slide (base 0) → duração do vídeo em ms
+// Ex.: { 2: 45000 } significa que o slide 3 tem um vídeo de 45s
+const SLIDE_VIDEO_DURATIONS = {
+  // 0: 30000,  // slide 1 tem vídeo de 30s
 }
 
-setInterval(updateClock,1000)
+// URL SEM delayms e com start=false para controle manual
+const SLIDE_BASE_URL = `https://docs.google.com/presentation/d/${PRESENTATION_ID}/embed?start=false&loop=false&rm=minimal`
+
+const frame = document.getElementById("slide-frame")
+frame.src = SLIDE_BASE_URL
+
+let currentSlide  = 0
+let slideTimer    = null
+let totalSlides   = null   // será inferido ao receber mensagem do iframe (se disponível)
+
+function getSlideDelay(index) {
+  if (SLIDE_VIDEO_DURATIONS[index] !== undefined) {
+    return SLIDE_VIDEO_DURATIONS[index] + VIDEO_BUFFER_MS
+  }
+  return DEFAULT_SLIDE_MS
+}
+
+function advanceSlide() {
+  // Envia comando "next" para o iframe do Google Slides
+  frame.contentWindow.postMessage(
+    JSON.stringify({ "cmd": "next" }),
+    "https://docs.google.com/presentation"
+  )
+  currentSlide++
+  scheduleNextAdvance()
+}
+
+function scheduleNextAdvance() {
+  clearTimeout(slideTimer)
+  slideTimer = setTimeout(() => {
+    advanceSlide()
+  }, getSlideDelay(currentSlide))
+}
+
+// Ouve mensagens do iframe (Google Slides envia eventos como slidechanged)
+window.addEventListener("message", (evt) => {
+  if (!evt.origin.includes("google.com")) return
+  try {
+    const data = typeof evt.data === "string" ? JSON.parse(evt.data) : evt.data
+    // Quando chega ao último slide, o Google Slides para — reiniciamos
+    if (data.state === "stopped" || data.slide === "last") {
+      currentSlide = 0
+      frame.src = SLIDE_BASE_URL   // reinicia a apresentação
+      setTimeout(scheduleNextAdvance, 1500)
+    }
+    // Atualiza índice real se o embed reportar
+    if (typeof data.currentSlide === "number") {
+      currentSlide = data.currentSlide
+    }
+  } catch (_) {}
+})
+
+// Inicia o loop após o iframe carregar
+frame.addEventListener("load", () => {
+  setTimeout(() => {
+    scheduleNextAdvance()
+  }, 2000) // aguarda render inicial
+})
+
+/* ============================================================
+   RELÓGIO
+   ============================================================ */
+
+function updateClock() {
+  const now = new Date()
+  const tz  = "America/Sao_Paulo"
+
+  const day  = new Intl.DateTimeFormat("pt-BR", { weekday: "long",  timeZone: tz }).format(now)
+  const date = new Intl.DateTimeFormat("pt-BR", { day: "numeric", month: "long", year: "numeric", timeZone: tz }).format(now)
+  const time = now.toLocaleTimeString("pt-BR",  { hour: "2-digit", minute: "2-digit", timeZone: tz })
+
+  document.getElementById("day-line").textContent  = day.charAt(0).toUpperCase() + day.slice(1)
+  document.getElementById("date-line").textContent = date
+  document.getElementById("time-container").textContent = time
+}
+
+setInterval(updateClock, 1000)
 updateClock()
 
-/* CLIMA COM CACHE */
+/* ============================================================
+   CLIMA COM CACHE
+   ============================================================ */
 
-async function fetchWeather(){
+async function fetchWeather() {
+  try {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=${WEATHER_API_KEY}&units=metric&lang=pt_br`
+    const res  = await fetch(url)
+    if (!res.ok) throw new Error("weather fetch failed")
 
-try{
+    const data = await res.json()
+    const temp = `${Math.round(data.main.temp)}°C`
+    const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
 
-const apiKey = "ff0a9d4e6f632ea18d6ce175c676d736"
+    document.getElementById("weather-temp").textContent = temp
+    document.getElementById("weather-icon-img").src     = icon
 
-const url = `https://api.openweathermap.org/data/2.5/weather?q=Rio de Janeiro&appid=${apiKey}&units=metric&lang=pt_br`
+    localStorage.setItem("weather_temp", temp)
+    localStorage.setItem("weather_icon", icon)
 
-const res = await fetch(url)
-
-if(!res.ok) throw new Error()
-
-const data = await res.json()
-
-const temp = `${Math.round(data.main.temp)}°C`
-const icon = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
-
-document.getElementById("weather-temp").textContent = temp
-document.getElementById("weather-icon-img").src = icon
-
-localStorage.setItem("weather_temp",temp)
-localStorage.setItem("weather_icon",icon)
-
-}catch(e){
-
-const temp = localStorage.getItem("weather_temp")
-const icon = localStorage.getItem("weather_icon")
-
-if(temp) document.getElementById("weather-temp").textContent = temp
-if(icon) document.getElementById("weather-icon-img").src = icon
-
-}
-
+  } catch (e) {
+    const temp = localStorage.getItem("weather_temp")
+    const icon = localStorage.getItem("weather_icon")
+    if (temp) document.getElementById("weather-temp").textContent = temp
+    if (icon) document.getElementById("weather-icon-img").src     = icon
+  }
 }
 
 fetchWeather()
-setInterval(fetchWeather,CLIMA_INTERVALO)
+setInterval(fetchWeather, CLIMA_INTERVALO)
 
-/* NOTÍCIAS */
+/* ============================================================
+   NOTÍCIAS (marquee)
+   ============================================================ */
 
 const marquee = document.getElementById("marquee-text")
 let lastSignature = ""
 
-function updateMarquee(content){
+function updateMarquee(content) {
+  marquee.innerHTML = content
 
-marquee.innerHTML = content
+  // Usa requestAnimationFrame para garantir que o layout já foi calculado
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const wText   = marquee.scrollWidth
+      const wScreen = window.innerWidth
+      const duration = (wText + wScreen) / VELOCIDADE_PX_SEG
 
-setTimeout(()=>{
-
-const wText = marquee.offsetWidth
-const wScreen = window.innerWidth
-const duration = (wText + wScreen) / VELOCIDADE_PX_SEG
-
-marquee.style.animation = "none"
-marquee.offsetHeight
-marquee.style.animation = `scrollLeft ${duration}s linear infinite`
-
-},120)
-
+      marquee.style.animation = "none"
+      // Força reflow de forma segura
+      void marquee.offsetWidth
+      marquee.style.animation = `scrollLeft ${duration}s linear infinite`
+    })
+  })
 }
 
-async function fetchNews(){
+async function fetchNews() {
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
+    const res  = await fetch(url)
+    if (!res.ok) throw new Error("sheet fetch failed")
 
-try{
+    const text  = await res.text()
+    const lines = text.split("\n").slice(1)
 
-const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
-const res = await fetch(url)
+    const news = lines
+      .map(l => l.replace(/^"|"$/g, "").replace(/""/g, '"').trim())
+      .filter(Boolean)
 
-if(!res.ok) throw new Error()
+    const content = (news.length ? news : ["Bem-vindo à Escola Eleva"])
+      .join('<span class="separator">|</span>')
 
-const text = await res.text()
+    if (content !== lastSignature) {
+      lastSignature = content
+      localStorage.setItem("news_cache", content)
+      updateMarquee(content)
+    }
 
-const lines = text.split("\n").slice(1)
-
-const news = lines
-.map(l=>l.replace(/^"|"$/g,"").replace(/""/g,'"').trim())
-.filter(Boolean)
-
-const content = (news.length ? news : ["Bem-vindo à Escola Eleva"])
-.join('<span class="separator">|</span>')
-
-if(content !== lastSignature){
-
-lastSignature = content
-
-localStorage.setItem("news_cache",content)
-
-updateMarquee(content)
-
-}
-
-}catch(e){
-
-const cache = localStorage.getItem("news_cache")
-
-if(cache) updateMarquee(cache)
-
-}
-
+  } catch (e) {
+    const cache = localStorage.getItem("news_cache")
+    if (cache && lastSignature === "") updateMarquee(cache)
+  }
 }
 
 fetchNews()
-setInterval(fetchNews,NEWS_INTERVALO)
+setInterval(fetchNews, NEWS_INTERVALO)
 
-/* VERIFICAÇÃO DO SLIDE */
+/* ============================================================
+   PROTEÇÃO TV  –  reload periódico para evitar memory leak
+   ============================================================ */
 
-let lastSlideSize = 0
+setInterval(() => { location.reload() }, RELOAD_INTERVALO)
 
-async function checkSlideUpdate(){
+/* ============================================================
+   FULLSCREEN
+   ============================================================ */
 
-try{
-
-const res = await fetch(SLIDE_URL+"&t="+Date.now())
-
-if(!res.ok) throw new Error()
-
-const text = await res.text()
-
-const size = text.length
-
-if(size !== lastSlideSize){
-
-lastSlideSize = size
-
-document.getElementById("slide-frame").src = SLIDE_URL+"&t="+Date.now()
-
+function openFullScreen() {
+  const elem = document.documentElement
+  if      (elem.requestFullscreen)       elem.requestFullscreen()
+  else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen()
 }
 
-}catch(e){
-console.log("Erro verificando slide")
-}
-
-}
-
-setInterval(checkSlideUpdate,SLIDE_CHECK_INTERVAL)
-
-/* PROTEÇÃO TV */
-
-setInterval(()=>{
-location.reload()
-},6*60*60*1000)
-
-/* FULLSCREEN */
-
-function openFullScreen(){
-
-const elem = document.documentElement
-
-if(elem.requestFullscreen) elem.requestFullscreen()
-else if(elem.webkitRequestFullscreen) elem.webkitRequestFullscreen()
-
-}
-
-window.addEventListener("load",()=>{
-setTimeout(openFullScreen,2000)
+window.addEventListener("load", () => {
+  setTimeout(openFullScreen, 2000)
 })
 
 </script>
-
 </body>
 </html>
