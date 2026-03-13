@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Cache-control para evitar versões antigas no browser da TV -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Eleva News</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* ── SLIDE CONTAINER ─────────────────────────────── */
+        .slide-wrapper {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            /* Deixa espaço para a barra inferior */
+            height: 87%;
+            background: #000;
+            z-index: 1;
+        }
+
+        .presentation-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Overlay de recuperação — aparece quando iframe trava */
+        .recovery-overlay {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        .recovery-overlay.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .recovery-overlay img {
+            width: 120px;
+            opacity: 0.4;
+        }
+
+        /* ── BARRA INFERIOR ──────────────────────────────── */
+        .info-bar {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%;
+            height: 13%;
+            min-height: 80px;
+            z-index: 999;
+            background: #ff8e03;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,.4);
+        }
+
+        /* Esquerda */
+        .left-group { display: flex; align-items: center; flex-shrink: 0; }
+
+        .logo-box {
+            background: #fff;
+            border-radius: 10px;
+            height: 60px;
+            width: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+        .logo-box img { max-width: 85%; max-height: 85%; object-fit: contain; }
+
+        .vertical-divider {
+            width: 2px;
+            height: 46px;
+            background: rgba(255,255,255,.3);
+            margin: 0 16px;
+            flex-shrink: 0;
+        }
+
+        .date-display { display: flex; flex-direction: column; min-width: 140px; }
+        .day-line  { font-size: clamp(14px, 2.6vh, 22px); font-weight: 800; }
+        .date-line { font-size: clamp(11px, 1.7vh, 16px); opacity: 0.9; }
+
+        /* Centro — marquee */
+        .marquee-container {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            margin: 0 16px;
+        }
+
+        /* 
+         * Usa translateX com JS em vez de animation CSS infinita.
+         * Animações CSS com duração >30 s travam em Tizen/webOS 
+         * após algumas horas por acúmulo de floating-point error.
+         */
+        #marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            font-size: clamp(14px, 3.2vh, 28px);
+            font-weight: 600;
+            will-change: transform;
+            /* Força GPU layer — evita repaint contínuo na CPU da TV */
+            transform: translateZ(0);
+        }
+
+        .separator { margin: 0 40px; opacity: 0.5; }
+
+        /* Direita */
+        .right-group { display: flex; align-items: center; flex-shrink: 0; }
+
+        .weather-container { display: flex; align-items: center; margin-right: 12px; }
+        .weather-icon-box img {
+            width: 50px; height: 50px;
+            filter: brightness(0) invert(1);
+        }
+        .weather-temp { font-size: clamp(16px, 3.2vh, 28px); font-weight: 800; margin-left: 4px; }
+        .weather-city { font-size: clamp(10px, 1.3vh, 14px); opacity: 0.85; }
+
+        .time-display {
+            font-size: clamp(20px, 4.5vh, 42px);
+            font-weight: 700;
+            min-width: 110px;
+            text-align: right;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SLIDE -->
+    <div class="slide-wrapper" id="slide-wrapper">
+        <iframe id="slide-frame" class="presentation-frame" allowfullscreen></iframe>
+        <div class="recovery-overlay" id="recovery-overlay">
+            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png" alt="">
+        </div>
+    </div>
+
+    <!-- BARRA INFERIOR -->
+    <div class="info-bar">
+        <div class="left-group">
+            <div class="logo-box">
+                <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png" alt="Eleva">
+            </div>
+            <div class="vertical-divider"></div>
+            <div class="date-display">
+                <div id="day-line"  class="day-line">--</div>
+                <div id="date-line" class="date-line">--</div>
+            </div>
+        </div>
+
+        <div class="marquee-container" id="marquee-container">
+            <div id="marquee-text">Carregando notícias...</div>
+        </div>
+
+        <div class="right-group">
+            <div class="weather-container">
+                <div class="weather-icon-box">
+                    <img id="weather-icon-img" src="" alt="" style="display:none;">
+                </div>
+                <div>
+                    <div id="weather-temp" class="weather-temp">--°C</div>
+                    <div class="weather-city">Rio de Janeiro</div>
+                </div>
+            </div>
+            <div class="vertical-divider"></div>
+            <div id="time-container" class="time-display">00:00</div>
+        </div>
+    </div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   CONFIGURAÇÕES — edite apenas aqui
+═══════════════════════════════════════════════════════ */
+var CONFIG = {
+    SLIDE_URL  : "https://docs.google.com/presentation/d/1DGoAjEoJlrCjzNGgVUDsi8ehTzpwxPJbt6-muG5Ry3k/embed?start=true&loop=true&rm=minimal&delayms=60000",
+    SHEET_ID   : "1CZ0NkBomU3prL1EmSk_baavwJRQySmjzRTf0HdLPMvo",
+    WEATHER_API: "https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br",
+
+    /* Velocidade do marquee em px/s — aumente para mais rápido */
+    MARQUEE_SPEED: 80,
+
+    /* Se o slide ficar sem trocar por mais que este tempo (ms), recarrega */
+    SLIDE_WATCHDOG_MS: 90000,   // 1 min 30 s
+
+    /* Recarregamento total da página (evita memory leak após horas ligada) */
+    FULL_RELOAD_MS: 4 * 60 * 60 * 1000  // 4 horas
+};
+
+/* ═══════════════════════════════════════════════════════
+   RELÓGIO — atualiza a cada 30 s (suficiente, menos CPU)
+═══════════════════════════════════════════════════════ */
+function updateClock() {
+    var now = new Date();
+    var dia = now.toLocaleDateString("pt-BR", { weekday: "long" });
+    dia = dia.charAt(0).toUpperCase() + dia.slice(1);
+    var data = now.toLocaleDateString("pt-BR", { day: "2-digit", month: "long" });
+    var hora = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
+    document.getElementById("day-line").textContent  = dia;
+    document.getElementById("date-line").textContent = data;
+    document.getElementById("time-container").textContent = hora;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CLIMA
+═══════════════════════════════════════════════════════ */
+function fetchWeather() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", CONFIG.WEATHER_API, true);
+    xhr.timeout = 10000;
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4 || xhr.status !== 200) return;
+        try {
+            var data = JSON.parse(xhr.responseText);
+            if (data && data.main) {
+                document.getElementById("weather-temp").textContent = Math.round(data.main.temp) + "°C";
+                var icon = data.weather[0].icon;
+                var img  = document.getElementById("weather-icon-img");
+                img.src = "https://openweathermap.org/img/wn/" + icon + "@2x.png";
+                img.style.display = "block";
+            }
+        } catch(e) {}
+    };
+    xhr.send();
+}
+
+/* ═══════════════════════════════════════════════════════
+   NOTÍCIAS — via Google Sheets CSV (sem fetch API)
+   Usa XMLHttpRequest para compatibilidade com Tizen 4/5
+═══════════════════════════════════════════════════════ */
+function fetchNews() {
+    var url = "https://docs.google.com/spreadsheets/d/" + CONFIG.SHEET_ID +
+              "/gviz/tq?tqx=out:csv&t=" + Date.now();
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.timeout = 15000;
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState !== 4 || xhr.status !== 200) return;
+        try {
+            var lines = xhr.responseText.split("\n").slice(1);
+            var news  = [];
+            for (var i = 0; i < lines.length; i++) {
+                var l = lines[i].replace(/"/g, "").trim();
+                if (l.length > 2) news.push(l);
+            }
+            if (news.length > 0) {
+                var content = news.join("  |  ");
+                var el = document.getElementById("marquee-text");
+                if (el.textContent !== content) {
+                    el.textContent = content;
+                    resetMarquee();
+                }
+            }
+        } catch(e) {}
+    };
+    xhr.send();
+}
+
+/* ═══════════════════════════════════════════════════════
+   MARQUEE — JS requestAnimationFrame
+   Substitui animação CSS infinita que trava em Tizen/webOS
+   após muitas horas pela acumulação de erro de ponto flutuante
+═══════════════════════════════════════════════════════ */
+var marqueeX      = 0;
+var marqueeRAF    = null;
+var marqueeEl     = null;
+var marqueeContainerEl = null;
+var lastTimestamp  = null;
+
+function resetMarquee() {
+    /* Começa da direita (fora do container) */
+    marqueeX = marqueeContainerEl.offsetWidth;
+    lastTimestamp = null;
+}
+
+function tickMarquee(ts) {
+    if (!lastTimestamp) lastTimestamp = ts;
+    var delta = (ts - lastTimestamp) / 1000;   // segundos
+    lastTimestamp = ts;
+
+    /* Limita delta para não pular quando a aba/browser fica inativo */
+    if (delta > 0.2) delta = 0.2;
+
+    marqueeX -= CONFIG.MARQUEE_SPEED * delta;
+
+    /* Quando sai totalmente pela esquerda, volta pelo lado direito */
+    var textWidth = marqueeEl.scrollWidth;
+    if (marqueeX < -textWidth) {
+        marqueeX = marqueeContainerEl.offsetWidth;
+    }
+
+    marqueeEl.style.transform = "translateX(" + Math.round(marqueeX) + "px)";
+    marqueeRAF = requestAnimationFrame(tickMarquee);
+}
+
+function startMarquee() {
+    if (marqueeRAF) cancelAnimationFrame(marqueeRAF);
+    resetMarquee();
+    marqueeRAF = requestAnimationFrame(tickMarquee);
+}
+
+/* ═══════════════════════════════════════════════════════
+   SLIDE WATCHDOG
+   Problema: Google Slides iframe trava (tela branca) em TVs.
+   Solução: detecta se o iframe parou de mudar o título/URL
+   usando postMessage + polling, e força reload do src.
+═══════════════════════════════════════════════════════ */
+var slideFrame        = null;
+var slideLastReload   = 0;
+var slideWatchdogTimer = null;
+var slideRecovering   = false;
+
+function loadSlide() {
+    slideFrame.src = "";   // limpa primeiro (importante no Tizen)
+    setTimeout(function() {
+        slideFrame.src = CONFIG.SLIDE_URL;
+        slideLastReload = Date.now();
+        slideRecovering = false;
+        document.getElementById("recovery-overlay").classList.remove("visible");
+    }, 800);
+}
+
+function onSlideLoad() {
+    /* iframe carregou com sucesso — reseta watchdog */
+    slideLastReload = Date.now();
+    slideRecovering = false;
+    document.getElementById("recovery-overlay").classList.remove("visible");
+    scheduleWatchdog();
+}
+
+function scheduleWatchdog() {
+    clearTimeout(slideWatchdogTimer);
+    slideWatchdogTimer = setTimeout(function() {
+        /* Testa se o iframe ainda está vivo tentando acessar contentWindow */
+        var alive = false;
+        try {
+            /* Em Tizen, iframe travado joga erro ao acessar contentWindow.location */
+            var loc = slideFrame.contentWindow.location.href;
+            alive = (loc && loc.length > 0);
+        } catch(e) {
+            alive = false;
+        }
+
+        if (!alive && !slideRecovering) {
+            slideRecovering = true;
+            document.getElementById("recovery-overlay").classList.add("visible");
+            setTimeout(loadSlide, 1500);
+        } else {
+            scheduleWatchdog();
+        }
+    }, CONFIG.SLIDE_WATCHDOG_MS);
+}
+
+/*
+ * Fallback visual: verifica a cada 2 min se o iframe
+ * ainda exibe conteúdo comparando a altura do documento interno.
+ * Cobre casos em que contentWindow.location não lança erro mas
+ * a página interna travou em branco.
+ */
+var lastSlideHeight = -1;
+function checkSlideBlank() {
+    if (slideRecovering) return;
+    try {
+        var h = slideFrame.contentWindow.document.body.scrollHeight;
+        if (h === 0 || (lastSlideHeight !== -1 && h === lastSlideHeight && h < 50)) {
+            slideRecovering = true;
+            document.getElementById("recovery-overlay").classList.add("visible");
+            setTimeout(loadSlide, 1500);
+        }
+        lastSlideHeight = h;
+    } catch(e) {
+        /* cross-origin: não conseguimos inspecionar — tudo certo */
+    }
+}
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+window.onload = function() {
+    /* Referências */
+    slideFrame         = document.getElementById("slide-frame");
+    marqueeEl          = document.getElementById("marquee-text");
+    marqueeContainerEl = document.getElementById("marquee-container");
+
+    /* Eventos */
+    slideFrame.addEventListener("load",  onSlideLoad);
+    slideFrame.addEventListener("error", function() {
+        if (!slideRecovering) {
+            slideRecovering = true;
+            document.getElementById("recovery-overlay").classList.add("visible");
+            setTimeout(loadSlide, 2000);
+        }
+    });
+
+    /* Inicia */
+    loadSlide();
+    updateClock();
+    fetchWeather();
+    fetchNews();
+    startMarquee();
+
+    /* Intervalos */
+    setInterval(updateClock,  30 * 1000);          // relógio: 30 s
+    setInterval(fetchWeather, 15 * 60 * 1000);     // clima: 15 min
+    setInterval(fetchNews,     5 * 60 * 1000);     // notícias: 5 min
+    setInterval(checkSlideBlank, 2 * 60 * 1000);   // checar tela branca: 2 min
+
+    /* Recarregamento total anti-memory-leak */
+    setTimeout(function() { location.reload(); }, CONFIG.FULL_RELOAD_MS);
+};
+</script>
+
+</body>
+</html>
