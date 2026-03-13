@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Eleva News - Botafogo</title>
+    <title>Eleva News - Botafogo (Estabilizado)</title>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,8 +67,7 @@
             margin: 0 20px;
         }
 
-        .date-display { display: flex; flex-direction: column; min-width: 150px; }
-        .day-line { font-size: 2.8vh; font-weight: 800; } /* Ajustado para caber nome completo */
+        .day-line { font-size: 3.2vh; font-weight: 800; text-transform: uppercase; }
         .date-line { font-size: 1.8vh; opacity: 0.9; }
 
         /* NOTÍCIAS (MARQUEE OTIMIZADO) */
@@ -88,7 +87,7 @@
             font-size: 3.5vh;
             font-weight: 600;
             padding-left: 100%;
-            animation: scroll-left 45s linear infinite; /* 45s para leitura confortável */
+            animation: scroll-left 40s linear infinite; /* Tempo fixo para estabilidade */
         }
 
         @keyframes scroll-left {
@@ -117,7 +116,6 @@
             font-weight: 700;
             min-width: 120px;
             text-align: right;
-            margin-left: 10px;
         }
     </style>
 </head>
@@ -170,26 +168,22 @@
             fetchWeather();
             fetchNews();
             
-            // Intervalos otimizados para evitar travamentos
-            setInterval(updateClock, 30000); 
+            // Ciclos de atualização lentos para poupar RAM
+            setInterval(updateClock, 30000); // Meio minuto
             setInterval(fetchWeather, 900000); // 15 min
-            setInterval(fetchNews, 300000);   // 5 min
+            setInterval(fetchNews, 300000); // 5 min
             
-            // Recarregamento total preventivo a cada 4 horas
+            // Reload total preventivo a cada 4 horas em vez de 1 hora
             setInterval(() => location.reload(), 14400000);
         }
 
         /* RELÓGIO */
         function updateClock() {
             const now = new Date();
-            
-            // Dia da semana completo com primeira letra maiúscula
-            let diaSemana = now.toLocaleDateString("pt-BR", { weekday: 'long' });
-            diaSemana = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
-
+            const diaSemana = now.toLocaleDateString("pt-BR", { weekday: 'long' });
             const dataCurta = now.toLocaleDateString("pt-BR", { day: '2-digit', month: 'long' });
             
-            document.getElementById("day-line").textContent = diaSemana;
+            document.getElementById("day-line").textContent = diaSemana.split('-')[0];
             document.getElementById("date-line").textContent = dataCurta;
             document.getElementById("time-container").textContent = now.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
         }
@@ -216,6 +210,7 @@
                 const res = await fetch(url);
                 const text = await res.text();
                 
+                // Limpeza básica de CSV
                 const news = text.split("\n")
                     .slice(1)
                     .map(l => l.replace(/"/g, "").trim())
@@ -225,6 +220,7 @@
                     const content = news.join(' <span class="separator"> | </span> ');
                     const marquee = document.getElementById("marquee-text");
                     
+                    // Só atualiza o DOM se o conteúdo for diferente
                     if (marquee.innerHTML !== content) {
                         marquee.innerHTML = content;
                     }
@@ -232,6 +228,7 @@
             } catch (e) { console.error("Erro news"); }
         }
 
+        // Inicia tudo
         window.onload = init;
     </script>
 
