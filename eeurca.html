@@ -6,7 +6,6 @@
 <title>URCA News</title>
 
 <style>
-/* RESET */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
@@ -17,7 +16,6 @@ html, body {
     overflow: hidden;
 }
 
-/* SLIDES */
 .presentation-frame {
     position: absolute;
     top: 0;
@@ -28,7 +26,6 @@ html, body {
     z-index: 1;
 }
 
-/* BARRA INFERIOR */
 .info-bar {
     position: absolute;
     bottom: 0;
@@ -49,7 +46,6 @@ html, body {
     box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
 }
 
-/* ESQUERDA */
 .left-group {
     display: flex;
     align-items: center;
@@ -98,7 +94,6 @@ html, body {
     opacity: 0.9;
 }
 
-/* MARQUEE */
 .marquee-container {
     flex: 1;
     height: 100%;
@@ -124,7 +119,6 @@ html, body {
     opacity: 0.6;
 }
 
-/* DIREITA */
 .right-group {
     display: flex;
     align-items: center;
@@ -161,9 +155,8 @@ html, body {
     margin-left: 20px;
 }
 
-/* ANIMAÇÃO */
 @keyframes scrollLeft {
-    0%   { transform: translateX(100%); }
+    0%   { transform: translateX(100vw); }
     100% { transform: translateX(-100%); }
 }
 </style>
@@ -171,17 +164,13 @@ html, body {
 
 <body>
 
-<iframe
-    id="slide-frame"
-    class="presentation-frame"
-    allowfullscreen>
-</iframe>
+<iframe id="slide-frame" class="presentation-frame" allowfullscreen></iframe>
 
 <div class="info-bar">
 
     <div class="left-group">
         <div class="logo-box">
-            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png" alt="URCA">
+            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
         </div>
         <div class="vertical-divider"></div>
         <div class="date-display">
@@ -197,7 +186,7 @@ html, body {
     <div class="right-group">
         <div class="weather-container">
             <div class="weather-icon-box">
-                <img id="weather-icon-img" src="">
+                <img id="weather-icon-img">
             </div>
             <div>
                 <div class="weather-temp" id="weather-temp">--°C</div>
@@ -211,13 +200,13 @@ html, body {
 </div>
 
 <script>
-/* CONFIGURAÇÕES */
+
+/* CONFIG */
 const SHEET_ID = '1EQJbh_I_Ok5yKS3Pre9n4C4wZ1zI9-QB';
 const VELOCIDADE_PX_SEG = 110;
 const CLIMA_INTERVALO = 10 * 60 * 1000;
-const NEWS_INTERVALO = 60 * 1000;
 
-/* SLIDES – 60s */
+/* SLIDES */
 const SLIDE_URL = "https://docs.google.com/presentation/d/1vhUc40QDZOBJbvGNmj7hzpOs0P8E5qV4/embed?start=true&loop=true&rm=minimal&delayms=60000";
 document.getElementById('slide-frame').src = SLIDE_URL;
 
@@ -255,7 +244,7 @@ setInterval(fetchWeather, CLIMA_INTERVALO);
 
 /* NOTÍCIAS */
 const marquee = document.getElementById('marquee-text');
-let lastSignature = "";
+let duracaoAtual = 120;
 
 async function fetchNews() {
     try {
@@ -268,27 +257,30 @@ async function fetchNews() {
             .map(l => l.replace(/^"|"$/g, '').replace(/""/g, '"').trim())
             .filter(Boolean);
 
-        const content = (news.length ? news : ["Bem-vindo à URCA"])
+        marquee.innerHTML = (news.length ? news : ["Bem-vindo à URCA"])
             .join('<span class="separator">|</span>');
 
-        if (content !== lastSignature) {
-            lastSignature = content;
-            marquee.innerHTML = content;
+        setTimeout(() => {
+            const wText = marquee.offsetWidth;
+            const wScreen = window.innerWidth;
 
-            setTimeout(() => {
-                const wText = marquee.offsetWidth;
-                const wScreen = window.innerWidth;
-                const duration = (wText + wScreen) / VELOCIDADE_PX_SEG;
+            duracaoAtual = (wText + wScreen) / VELOCIDADE_PX_SEG;
 
-                marquee.style.animation = 'none';
-                marquee.offsetHeight;
-                marquee.style.animation = `scrollLeft ${duration}s linear infinite`;
-            }, 150);
-        }
+            marquee.style.animation = 'none';
+            marquee.offsetHeight;
+            marquee.style.animation = `scrollLeft ${duracaoAtual}s linear infinite`;
+        }, 120);
+
     } catch {}
 }
-fetchNews();
-setInterval(fetchNews, NEWS_INTERVALO);
+
+/* CICLO INTELIGENTE */
+async function cicloNoticias() {
+    await fetchNews();
+    setTimeout(cicloNoticias, duracaoAtual * 1000);
+}
+
+cicloNoticias();
 
 /* ESTABILIDADE */
 setTimeout(() => location.reload(true), 86400000);
@@ -301,6 +293,7 @@ function openFullScreen() {
 }
 window.addEventListener("load", () => setTimeout(openFullScreen, 3000));
 document.body.addEventListener("click", openFullScreen);
+
 </script>
 
 </body>

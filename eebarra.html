@@ -14,7 +14,7 @@ html,body{
 width:100%;
 height:100%;
 background:#000;
-font-family:"Segoe UI",Roboto,Arial;
+font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 overflow:hidden;
 }
 
@@ -30,7 +30,7 @@ border:none;
 z-index:1;
 }
 
-/* BARRA INFERIOR */
+/* BARRA */
 
 .info-bar{
 position:absolute;
@@ -46,29 +46,39 @@ align-items:center;
 justify-content:space-between;
 padding:0 2rem;
 z-index:999;
+box-shadow:0 -4px 20px rgba(0,0,0,.4);
 }
 
-/* LOGO */
+/* ESQUERDA */
 
 .left-group{
 display:flex;
 align-items:center;
+padding-right:20px;
 }
 
 .logo-box{
-background:#fff;
-border-radius:10px;
-height:65px;
-width:65px;
-display:flex;
-align-items:center;
-justify-content:center;
-margin-right:20px;
+    background:#fff;
+    border-radius:10px;
+    height:65px;
+    width:65px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-right:20px;
 }
 
 .logo-box img{
 max-width:100%;
 max-height:100%;
+object-fit:contain;
+}
+
+.vertical-divider{
+width:2px;
+height:60%;
+background:rgba(255,255,255,.3);
+margin-right:20px;
 }
 
 .date-display{
@@ -77,55 +87,87 @@ flex-direction:column;
 }
 
 .day-line{
-font-size:2.6vh;
-font-weight:700;
+font-size:3.2vh;
+font-weight:800;
+text-transform:capitalize;
 }
 
 .date-line{
-font-size:1.6vh;
+font-size:1.8vh;
+opacity:.95;
 }
 
 /* NEWS */
 
 .marquee-container{
 flex:1;
+height:100%;
+position:relative;
 overflow:hidden;
-margin:0 40px;
+display:flex;
+align-items:center;
+
+mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
+-webkit-mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
 }
 
 .marquee-content{
+position:absolute;
 white-space:nowrap;
-font-size:2.5vh;
+will-change:transform;
+font-size:3.2vh;
 font-weight:600;
-animation:scroll 40s linear infinite;
+letter-spacing:.4px;
 }
 
 .separator{
-margin:0 30px;
-opacity:.6;
+margin:0 40px;
+opacity:.5;
 }
 
-@keyframes scroll{
-0%{transform:translateX(100%)}
-100%{transform:translateX(-100%)}
-}
-
-/* CLIMA + HORA */
+/* DIREITA */
 
 .right-group{
 display:flex;
 align-items:center;
-gap:20px;
+padding-left:20px;
 }
 
-.weather{
-font-size:2.5vh;
-font-weight:700;
+.weather-container{
+display:flex;
+align-items:center;
+margin-right:20px;
+}
+
+.weather-icon-box img{
+width:45px;
+height:45px;
+filter:brightness(0) invert(1);
+margin-right:6px;
+}
+
+.weather-temp{
+font-size:3.5vh;
+font-weight:800;
+}
+
+.weather-city{
+font-size:1.5vh;
+font-weight:600;
+opacity:.9;
 }
 
 .time-display{
-font-size:4vh;
-font-weight:800;
+font-size:5vh;
+font-weight:700;
+margin-left:20px;
+}
+
+/* ANIMAÇÃO */
+
+@keyframes scroll{
+0%{transform:translateX(100vw)}
+100%{transform:translateX(-100%)}
 }
 
 </style>
@@ -143,6 +185,8 @@ font-weight:800;
 <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
 </div>
 
+<div class="vertical-divider"></div>
+
 <div class="date-display">
 <div id="day-line" class="day-line"></div>
 <div id="date-line" class="date-line"></div>
@@ -156,9 +200,20 @@ font-weight:800;
 
 <div class="right-group">
 
-<div id="weather-temp" class="weather">--°C</div>
+<div class="weather-container">
+<div class="weather-icon-box">
+<img id="weather-icon-img">
+</div>
 
-<div class="time-display" id="time-container"></div>
+<div>
+<div id="weather-temp" class="weather-temp">--°C</div>
+<div class="weather-city">Rio de Janeiro – RJ</div>
+</div>
+</div>
+
+<div class="vertical-divider"></div>
+
+<div class="time-display" id="time-container">--:--</div>
 
 </div>
 
@@ -169,80 +224,63 @@ font-weight:800;
 /* CONFIG */
 
 const SLIDE_URL="https://docs.google.com/presentation/d/1BfDmmXdLbYf4pwT3qr3zT3Vi83jXSxVh/embed?start=true&loop=true&delayms=60000"
-
 const SHEET_ID="1eqxuVOCbTQU4zBfzGSM67VyNSSddPC9V"
+const VELOCIDADE_PX_SEG=110
 
 const WEATHER_API="https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
 
 /* SLIDES */
 
 function loadSlides(){
-
-document.getElementById("slide-frame").src=
-SLIDE_URL+"&t="+Date.now()
-
+document.getElementById("slide-frame").src=SLIDE_URL+"&t="+Date.now()
 }
-
 loadSlides()
-
-/* reinicia slides a cada 15 min */
-
 setInterval(loadSlides,900000)
-
-/* reload total a cada 6h */
-
 setInterval(()=>location.reload(),21600000)
 
 /* RELÓGIO */
 
 function updateClock(){
-
 const now=new Date()
 
-const day=now.toLocaleDateString("pt-BR",{weekday:"long"})
-const date=now.toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"})
+let day=new Intl.DateTimeFormat("pt-BR",{weekday:"long"}).format(now)
+day=day.charAt(0).toUpperCase()+day.slice(1)
+
+const date=new Intl.DateTimeFormat("pt-BR",{day:"numeric",month:"long",year:"numeric"}).format(now)
 const time=now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})
 
 document.getElementById("day-line").textContent=day
 document.getElementById("date-line").textContent=date
 document.getElementById("time-container").textContent=time
-
 }
-
 setInterval(updateClock,1000)
-
 updateClock()
 
 /* CLIMA */
 
 async function fetchWeather(){
-
 try{
-
 const res=await fetch(WEATHER_API)
 const data=await res.json()
 
-const temp=Math.round(data.main.temp)+"°C"
-
-document.getElementById("weather-temp").textContent=temp
+document.getElementById("weather-temp").textContent=Math.round(data.main.temp)+"°C"
+document.getElementById("weather-icon-img").src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
 
 }catch{}
-
 }
-
 fetchWeather()
 setInterval(fetchWeather,600000)
 
-/* NEWS GOOGLE SHEETS */
+/* NEWS */
+
+const marquee=document.getElementById("marquee-text")
+let duracaoAtual=120
 
 async function fetchNews(){
-
 try{
 
 const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
-
 const res=await fetch(url)
-
 const text=await res.text()
 
 const lines=text.split("\n").slice(1)
@@ -251,26 +289,38 @@ const news=lines
 .map(l=>l.replace(/"/g,"").trim())
 .filter(Boolean)
 
-document.getElementById("marquee-text").innerHTML=
-news.join('<span class="separator">|</span>')
+marquee.innerHTML=news.join('<span class="separator">|</span>')
+
+setTimeout(()=>{
+const wText=marquee.offsetWidth
+const wScreen=window.innerWidth
+
+duracaoAtual=(wText+wScreen)/VELOCIDADE_PX_SEG
+
+marquee.style.animation="none"
+marquee.offsetHeight
+marquee.style.animation=`scroll ${duracaoAtual}s linear infinite`
+
+},100)
 
 }catch{}
-
 }
 
-fetchNews()
+/* CICLO INTELIGENTE */
 
-setInterval(fetchNews,60000)
+async function cicloNoticias(){
+await fetchNews()
+setTimeout(cicloNoticias,duracaoAtual*1000)
+}
+
+cicloNoticias()
 
 /* FULLSCREEN */
 
 function openFullscreen(){
-
 const elem=document.documentElement
-
 if(elem.requestFullscreen)elem.requestFullscreen()
 else if(elem.webkitRequestFullscreen)elem.webkitRequestFullscreen()
-
 }
 
 setTimeout(openFullscreen,2000)
