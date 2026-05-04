@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Eleva News</title>
+<title>Land School News</title>
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,23 +16,28 @@ html, body {
     overflow: hidden;
 }
 
+/* SLIDES */
 .presentation-frame {
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     border: none;
     z-index: 1;
 }
 
+/* BARRA */
 .info-bar {
     position: absolute;
     bottom: 0;
+    left: 0;
     width: 100%;
     height: 13%;
     min-height: 90px;
     z-index: 999;
 
-    background-color: #ff8e03;
+    background-color: #0b1c5a;
     color: #fff;
 
     display: flex;
@@ -43,17 +48,19 @@ html, body {
     box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
 }
 
-.left-group, .right-group {
+/* ESQUERDA */
+.left-group {
     display: flex;
     align-items: center;
     height: 100%;
+    padding-right: 20px;
 }
 
 .logo-box {
     background: #fff;
     border-radius: 12px;
     height: 75%;
-    aspect-ratio: 1;
+    aspect-ratio: 1 / 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,38 +71,71 @@ html, body {
 .logo-box img {
     max-width: 100%;
     max-height: 100%;
+    object-fit: contain;
 }
 
 .vertical-divider {
     width: 2px;
     height: 60%;
-    background: rgba(255,255,255,0.3);
-    margin: 0 20px;
+    background-color: rgba(255,255,255,0.3);
+    margin-right: 20px;
 }
 
-.day-line { font-size: 3.2vh; font-weight: 800; }
-.date-line { font-size: 1.8vh; }
+.date-display {
+    display: flex;
+    flex-direction: column;
+}
 
+.day-line {
+    font-size: 3.2vh;
+    font-weight: 800;
+    text-transform: capitalize;
+}
+
+.date-line {
+    font-size: 1.8vh;
+    opacity: 0.9;
+}
+
+/* CENTRO */
 .marquee-container {
     flex: 1;
-    overflow: hidden;
+    height: 100%;
     position: relative;
+    overflow: hidden;
     display: flex;
     align-items: center;
 
     mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
 }
 
 .marquee-content {
     position: absolute;
     white-space: nowrap;
+    will-change: transform;
     font-size: 3vh;
     font-weight: 600;
 }
 
-.separator { margin: 0 30px; opacity: 0.6; }
+.separator {
+    margin: 0 30px;
+    opacity: 0.6;
+}
 
-.weather-container { display: flex; align-items: center; }
+/* DIREITA */
+.right-group {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 20px;
+}
+
+.weather-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
 
 .weather-icon-box img {
     width: 42px;
@@ -104,8 +144,15 @@ html, body {
     margin-right: 10px;
 }
 
-.weather-temp { font-size: 3.5vh; font-weight: 800; }
-.weather-city { font-size: 1.5vh; }
+.weather-temp {
+    font-size: 3.5vh;
+    font-weight: 800;
+}
+
+.weather-city {
+    font-size: 1.5vh;
+    opacity: 0.9;
+}
 
 .time-display {
     font-size: 5vh;
@@ -113,6 +160,7 @@ html, body {
     margin-left: 20px;
 }
 
+/* ANIMAÇÃO */
 @keyframes scrollLeft {
     0%   { transform: translateX(100vw); }
     100% { transform: translateX(-100%); }
@@ -122,23 +170,23 @@ html, body {
 
 <body>
 
-<iframe id="slide-frame" class="presentation-frame"></iframe>
+<iframe id="slide-frame" class="presentation-frame" allowfullscreen></iframe>
 
 <div class="info-bar">
 
     <div class="left-group">
         <div class="logo-box">
-            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
+            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school101/files/2024-03/31653_marca_guri_azul_vertical_3.png">
         </div>
         <div class="vertical-divider"></div>
-        <div>
+        <div class="date-display">
             <div id="day-line" class="day-line">...</div>
             <div id="date-line" class="date-line">...</div>
         </div>
     </div>
 
     <div class="marquee-container">
-        <div id="marquee-text" class="marquee-content">Carregando...</div>
+        <div id="marquee-text" class="marquee-content">Carregando notícias...</div>
     </div>
 
     <div class="right-group">
@@ -147,12 +195,12 @@ html, body {
                 <img id="weather-icon-img">
             </div>
             <div>
-                <div id="weather-temp" class="weather-temp">--°C</div>
-                <div class="weather-city">Brasília - DF</div>
+                <div class="weather-temp" id="weather-temp">--°C</div>
+                <div class="weather-city">Salvador - BA</div>
             </div>
         </div>
         <div class="vertical-divider"></div>
-        <div id="time-container" class="time-display">--:--</div>
+        <div class="time-display" id="time-container">--:--</div>
     </div>
 
 </div>
@@ -160,12 +208,12 @@ html, body {
 <script>
 
 /* CONFIG */
-const SHEET_ID = '1g-zyLDL2U9-UlIJnbyVMx9Rj17L2EWFW';
+const SHEET_ID = '1mvBjvJsXZNtePRypUXrMF-CX36Fsgwse';
 const VELOCIDADE_PX_SEG = 110;
 const CLIMA_INTERVALO = 10 * 60 * 1000;
 
 /* SLIDES */
-const SLIDE_URL = "https://docs.google.com/presentation/d/1yPmrNcZL4AkZp3oyHu3NynFGrY0B9_Iv/embed?start=true&loop=true&rm=minimal&delayms=10000";
+const SLIDE_URL = "https://docs.google.com/presentation/d/1-up52stUKy2zAgLo96c36cKeYDCK1_RP/embed?start=true&loop=true&rm=minimal&delayms=60000";
 document.getElementById('slide-frame').src = SLIDE_URL;
 
 /* RELÓGIO */
@@ -184,10 +232,10 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-/* CLIMA (corrigido intervalo) */
+/* CLIMA */
 async function fetchWeather() {
     const apiKey = "ff0a9d4e6f632ea18d6ce175c676d736";
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=Brasilia&appid=${apiKey}&units=metric&lang=pt_br`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=Salvador&appid=${apiKey}&units=metric&lang=pt_br`;
 
     try {
         const res = await fetch(url);
@@ -200,7 +248,7 @@ async function fetchWeather() {
 fetchWeather();
 setInterval(fetchWeather, CLIMA_INTERVALO);
 
-/* NOTÍCIAS INTELIGENTE */
+/* NOTÍCIAS */
 const marquee = document.getElementById('marquee-text');
 let duracaoAtual = 120;
 
@@ -215,7 +263,7 @@ async function fetchNews() {
             .map(l => l.replace(/^"|"$/g, '').replace(/""/g, '"').trim())
             .filter(Boolean);
 
-        marquee.innerHTML = (news.length ? news : ["Bem-vindo à Escola Eleva"])
+        marquee.innerHTML = (news.length ? news : ["Bem-vindo à Land School"])
             .join('<span class="separator">|</span>');
 
         setTimeout(() => {
@@ -232,7 +280,6 @@ async function fetchNews() {
     } catch {}
 }
 
-/* CICLO PERFEITO */
 async function cicloNoticias() {
     await fetchNews();
     setTimeout(cicloNoticias, duracaoAtual * 1000);
