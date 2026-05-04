@@ -1,175 +1,122 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Eleva News - Barra</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Eleva News</title>
 
 <style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-*{box-sizing:border-box;margin:0;padding:0}
-
-html,body{
-width:100%;
-height:100%;
-background:#000;
-font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-overflow:hidden;
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    overflow: hidden;
 }
 
-/* SLIDES */
-
-.presentation-frame{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-border:none;
-z-index:1;
+.presentation-frame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 1;
 }
 
-/* BARRA */
+.info-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 13%;
+    min-height: 90px;
+    z-index: 999;
 
-.info-bar{
-position:absolute;
-bottom:0;
-left:0;
-width:100%;
-height:13%;
-min-height:90px;
-background:#ff8e03;
-color:#fff;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 2rem;
-z-index:999;
-box-shadow:0 -4px 20px rgba(0,0,0,.4);
+    background-color: #ff8e03;
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
 }
 
-/* ESQUERDA */
-
-.left-group{
-display:flex;
-align-items:center;
-padding-right:20px;
+.left-group, .right-group {
+    display: flex;
+    align-items: center;
+    height: 100%;
 }
 
-.logo-box{
-    background:#fff;
-    border-radius:10px;
-    height:65px;
-    width:65px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin-right:20px;
+.logo-box {
+    background: #fff;
+    border-radius: 12px;
+    height: 75%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    margin-right: 20px;
 }
 
-.logo-box img{
-max-width:100%;
-max-height:100%;
-object-fit:contain;
+.logo-box img {
+    max-width: 100%;
+    max-height: 100%;
 }
 
-.vertical-divider{
-width:2px;
-height:60%;
-background:rgba(255,255,255,.3);
-margin-right:20px;
+.vertical-divider {
+    width: 2px;
+    height: 60%;
+    background: rgba(255,255,255,0.3);
+    margin: 0 20px;
 }
 
-.date-display{
-display:flex;
-flex-direction:column;
+.day-line { font-size: 3.2vh; font-weight: 800; }
+.date-line { font-size: 1.8vh; }
+
+.marquee-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
 }
 
-.day-line{
-font-size:3.2vh;
-font-weight:800;
-text-transform:capitalize;
+.marquee-content {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 3vh;
+    font-weight: 600;
 }
 
-.date-line{
-font-size:1.8vh;
-opacity:.95;
+.separator { margin: 0 30px; opacity: 0.6; }
+
+.weather-container { display: flex; align-items: center; }
+
+.weather-icon-box img {
+    width: 42px;
+    height: 42px;
+    filter: brightness(0) invert(1);
+    margin-right: 10px;
 }
 
-/* NEWS */
+.weather-temp { font-size: 3.5vh; font-weight: 800; }
+.weather-city { font-size: 1.5vh; }
 
-.marquee-container{
-flex:1;
-height:100%;
-position:relative;
-overflow:hidden;
-display:flex;
-align-items:center;
-
-mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
--webkit-mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
+.time-display {
+    font-size: 5vh;
+    font-weight: 700;
+    margin-left: 20px;
 }
 
-.marquee-content{
-position:absolute;
-white-space:nowrap;
-will-change:transform;
-font-size:3.2vh;
-font-weight:600;
-letter-spacing:.4px;
+@keyframes scrollLeft {
+    0%   { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
 }
-
-.separator{
-margin:0 40px;
-opacity:.5;
-}
-
-/* DIREITA */
-
-.right-group{
-display:flex;
-align-items:center;
-padding-left:20px;
-}
-
-.weather-container{
-display:flex;
-align-items:center;
-margin-right:20px;
-}
-
-.weather-icon-box img{
-width:45px;
-height:45px;
-filter:brightness(0) invert(1);
-margin-right:6px;
-}
-
-.weather-temp{
-font-size:3.5vh;
-font-weight:800;
-}
-
-.weather-city{
-font-size:1.5vh;
-font-weight:600;
-opacity:.9;
-}
-
-.time-display{
-font-size:5vh;
-font-weight:700;
-margin-left:20px;
-}
-
-/* ANIMAÇÃO */
-
-@keyframes scroll{
-0%{transform:translateX(100vw)}
-100%{transform:translateX(-100%)}
-}
-
 </style>
 </head>
 
@@ -179,151 +126,131 @@ margin-left:20px;
 
 <div class="info-bar">
 
-<div class="left-group">
+    <div class="left-group">
+        <div class="logo-box">
+            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
+        </div>
+        <div class="vertical-divider"></div>
+        <div>
+            <div id="day-line" class="day-line">...</div>
+            <div id="date-line" class="date-line">...</div>
+        </div>
+    </div>
 
-<div class="logo-box">
-<img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
-</div>
+    <div class="marquee-container">
+        <div id="marquee-text" class="marquee-content">Carregando...</div>
+    </div>
 
-<div class="vertical-divider"></div>
-
-<div class="date-display">
-<div id="day-line" class="day-line"></div>
-<div id="date-line" class="date-line"></div>
-</div>
-
-</div>
-
-<div class="marquee-container">
-<div id="marquee-text" class="marquee-content">Carregando notícias...</div>
-</div>
-
-<div class="right-group">
-
-<div class="weather-container">
-<div class="weather-icon-box">
-<img id="weather-icon-img">
-</div>
-
-<div>
-<div id="weather-temp" class="weather-temp">--°C</div>
-<div class="weather-city">Rio de Janeiro – RJ</div>
-</div>
-</div>
-
-<div class="vertical-divider"></div>
-
-<div class="time-display" id="time-container">--:--</div>
-
-</div>
+    <div class="right-group">
+        <div class="weather-container">
+            <div class="weather-icon-box">
+                <img id="weather-icon-img">
+            </div>
+            <div>
+                <div id="weather-temp" class="weather-temp">--°C</div>
+                <div class="weather-city">Brasília - DF</div>
+            </div>
+        </div>
+        <div class="vertical-divider"></div>
+        <div id="time-container" class="time-display">--:--</div>
+    </div>
 
 </div>
 
 <script>
 
 /* CONFIG */
-
-const SLIDE_URL="https://docs.google.com/presentation/d/1BfDmmXdLbYf4pwT3qr3zT3Vi83jXSxVh/embed?start=true&loop=true&delayms=60000"
-const SHEET_ID="1eqxuVOCbTQU4zBfzGSM67VyNSSddPC9V"
-const VELOCIDADE_PX_SEG=110
-
-const WEATHER_API="https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
+const SHEET_ID = '1g-zyLDL2U9-UlIJnbyVMx9Rj17L2EWFW';
+const VELOCIDADE_PX_SEG = 110;
+const CLIMA_INTERVALO = 10 * 60 * 1000;
 
 /* SLIDES */
-
-function loadSlides(){
-document.getElementById("slide-frame").src=SLIDE_URL+"&t="+Date.now()
-}
-loadSlides()
-setInterval(loadSlides,900000)
-setInterval(()=>location.reload(),21600000)
+const SLIDE_URL = "https://docs.google.com/presentation/d/1yPmrNcZL4AkZp3oyHu3NynFGrY0B9_Iv/embed?start=true&loop=true&rm=minimal&delayms=10000";
+document.getElementById('slide-frame').src = SLIDE_URL;
 
 /* RELÓGIO */
+function updateClock() {
+    const now = new Date();
+    const tz = 'America/Sao_Paulo';
 
-function updateClock(){
-const now=new Date()
+    const day = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', timeZone: tz }).format(now);
+    const date = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: tz }).format(now);
+    const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: tz });
 
-let day=new Intl.DateTimeFormat("pt-BR",{weekday:"long"}).format(now)
-day=day.charAt(0).toUpperCase()+day.slice(1)
-
-const date=new Intl.DateTimeFormat("pt-BR",{day:"numeric",month:"long",year:"numeric"}).format(now)
-const time=now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})
-
-document.getElementById("day-line").textContent=day
-document.getElementById("date-line").textContent=date
-document.getElementById("time-container").textContent=time
+    document.getElementById('day-line').textContent = day.charAt(0).toUpperCase() + day.slice(1);
+    document.getElementById('date-line').textContent = date;
+    document.getElementById('time-container').textContent = time;
 }
-setInterval(updateClock,1000)
-updateClock()
+setInterval(updateClock, 1000);
+updateClock();
 
-/* CLIMA */
+/* CLIMA (corrigido intervalo) */
+async function fetchWeather() {
+    const apiKey = "ff0a9d4e6f632ea18d6ce175c676d736";
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=Brasilia&appid=${apiKey}&units=metric&lang=pt_br`;
 
-async function fetchWeather(){
-try{
-const res=await fetch(WEATHER_API)
-const data=await res.json()
-
-document.getElementById("weather-temp").textContent=Math.round(data.main.temp)+"°C"
-document.getElementById("weather-icon-img").src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
-
-}catch{}
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        document.getElementById('weather-temp').textContent = `${Math.round(data.main.temp)}°C`;
+        document.getElementById('weather-icon-img').src =
+            `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    } catch {}
 }
-fetchWeather()
-setInterval(fetchWeather,600000)
+fetchWeather();
+setInterval(fetchWeather, CLIMA_INTERVALO);
 
-/* NEWS */
+/* NOTÍCIAS INTELIGENTE */
+const marquee = document.getElementById('marquee-text');
+let duracaoAtual = 120;
 
-const marquee=document.getElementById("marquee-text")
-let duracaoAtual=120
+async function fetchNews() {
+    try {
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
+        const res = await fetch(url);
+        const text = await res.text();
 
-async function fetchNews(){
-try{
+        const lines = text.split('\n').slice(1);
+        const news = lines
+            .map(l => l.replace(/^"|"$/g, '').replace(/""/g, '"').trim())
+            .filter(Boolean);
 
-const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
-const res=await fetch(url)
-const text=await res.text()
+        marquee.innerHTML = (news.length ? news : ["Bem-vindo à Escola Eleva"])
+            .join('<span class="separator">|</span>');
 
-const lines=text.split("\n").slice(1)
+        setTimeout(() => {
+            const wText = marquee.offsetWidth;
+            const wScreen = window.innerWidth;
 
-const news=lines
-.map(l=>l.replace(/"/g,"").trim())
-.filter(Boolean)
+            duracaoAtual = (wText + wScreen) / VELOCIDADE_PX_SEG;
 
-marquee.innerHTML=news.join('<span class="separator">|</span>')
+            marquee.style.animation = 'none';
+            marquee.offsetHeight;
+            marquee.style.animation = `scrollLeft ${duracaoAtual}s linear infinite`;
+        }, 120);
 
-setTimeout(()=>{
-const wText=marquee.offsetWidth
-const wScreen=window.innerWidth
-
-duracaoAtual=(wText+wScreen)/VELOCIDADE_PX_SEG
-
-marquee.style.animation="none"
-marquee.offsetHeight
-marquee.style.animation=`scroll ${duracaoAtual}s linear infinite`
-
-},100)
-
-}catch{}
+    } catch {}
 }
 
-/* CICLO INTELIGENTE */
-
-async function cicloNoticias(){
-await fetchNews()
-setTimeout(cicloNoticias,duracaoAtual*1000)
+/* CICLO PERFEITO */
+async function cicloNoticias() {
+    await fetchNews();
+    setTimeout(cicloNoticias, duracaoAtual * 1000);
 }
 
-cicloNoticias()
+cicloNoticias();
+
+/* ESTABILIDADE */
+setTimeout(() => location.reload(true), 86400000);
 
 /* FULLSCREEN */
-
-function openFullscreen(){
-const elem=document.documentElement
-if(elem.requestFullscreen)elem.requestFullscreen()
-else if(elem.webkitRequestFullscreen)elem.webkitRequestFullscreen()
+function openFullScreen() {
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+    }
 }
-
-setTimeout(openFullscreen,2000)
+window.addEventListener("load", () => setTimeout(openFullScreen, 3000));
+document.body.addEventListener("click", openFullScreen);
 
 </script>
 
