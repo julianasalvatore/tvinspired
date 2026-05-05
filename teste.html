@@ -6,298 +6,353 @@
 <title>Land School News</title>
 
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    overflow: hidden;
+* { box-sizing:border-box;margin:0;padding:0 }
+
+html,body{
+width:100%;
+height:100%;
+background:#000;
+font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+overflow:hidden;
 }
 
 /* SLIDES */
-.presentation-frame {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    z-index: 1;
+
+.presentation-frame{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+border:none;
+z-index:1;
 }
 
 /* BARRA */
-.info-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 13%;
-    min-height: 90px;
-    z-index: 999;
 
-    background-color: #0b1c5a;
-    color: #fff;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-
-    box-shadow: 0 -4px 20px rgba(0,0,0,0.4);
+.info-bar{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:13%;
+min-height:90px;
+z-index:999;
+background:#0b1c5a;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 2rem;
+box-shadow:0 -4px 20px rgba(0,0,0,.4);
 }
 
-/* ESQUERDA */
-.left-group {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding-right: 20px;
+.left-group{
+display:flex;
+align-items:center;
+height:100%;
+flex:0 0 auto;
+background:#0b1c5a;
+padding-right:20px;
+z-index:1000;
 }
 
-.logo-box {
-    background: #fff;
-    border-radius: 12px;
-    height: 75%;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px;
-    margin-right: 20px;
+.logo-box{
+background:#fff;
+border-radius:12px;
+height:75%;
+aspect-ratio:1/1;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:5px;
+margin-right:20px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
-.logo-box img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+.logo-box img{
+max-width:100%;
+max-height:100%;
+object-fit:contain;
 }
 
-.vertical-divider {
-    width: 2px;
-    height: 60%;
-    background-color: rgba(255,255,255,0.3);
-    margin-right: 20px;
+.vertical-divider{
+width:2px;
+height:60%;
+background:rgba(255,255,255,.3);
+margin-right:20px;
 }
 
-.date-display {
-    display: flex;
-    flex-direction: column;
+.date-display{
+display:flex;
+flex-direction:column;
+justify-content:center;
 }
 
-.day-line {
-    font-size: 3.2vh;
-    font-weight: 800;
-    text-transform: capitalize;
+.day-line{
+font-size:3.2vh;
+font-weight:800;
+line-height:1.1;
+text-transform:capitalize;
 }
 
-.date-line {
-    font-size: 1.8vh;
-    opacity: 0.9;
+.date-line{
+font-size:1.8vh;
+opacity:.95;
 }
 
-/* CENTRO */
-.marquee-container {
-    flex: 1;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
+/* NEWS */
 
-    mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+.marquee-container{
+flex:1;
+height:100%;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:center;
+
+mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
+-webkit-mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
 }
 
-.marquee-content {
-    position: absolute;
-    white-space: nowrap;
-    will-change: transform;
-    font-size: 3vh;
-    font-weight: 600;
+.marquee-content{
+position:absolute;
+white-space:nowrap;
+display:inline-block;
+will-change:transform;
+color:#fff;
+font-size:3.5vh;
+font-weight:600;
+letter-spacing:.5px;
+text-shadow:1px 1px 3px rgba(0,0,0,.2);
 }
 
-.separator {
-    margin: 0 30px;
-    opacity: 0.6;
+.separator{
+color:rgba(255,255,255,.5);
+margin:0 40px;
+font-weight:300;
 }
 
-/* DIREITA */
-.right-group {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding-left: 20px;
+.right-group{
+display:flex;
+align-items:center;
+height:100%;
+flex:0 0 auto;
+background:#0b1c5a;
+padding-left:20px;
+z-index:1000;
 }
 
-.weather-container {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
+.weather-container{
+display:flex;
+align-items:center;
+margin-right:20px;
 }
 
-.weather-icon-box img {
-    width: 42px;
-    height: 42px;
-    filter: brightness(0) invert(1);
-    margin-right: 10px;
+.weather-icon-box img{
+width:50px;
+height:50px;
+filter:brightness(0) invert(1);
+margin-right:5px;
 }
 
-.weather-temp {
-    font-size: 3.5vh;
-    font-weight: 800;
+.weather-temp{
+font-size:3.5vh;
+font-weight:800;
+line-height:1;
 }
 
-.weather-city {
-    font-size: 1.5vh;
-    opacity: 0.9;
+.weather-city{
+font-size:1.5vh;
+font-weight:600;
+opacity:.9;
 }
 
-.time-display {
-    font-size: 5vh;
-    font-weight: 700;
-    margin-left: 20px;
+.time-display{
+color:#fff;
+font-size:5vh;
+font-weight:700;
+font-variant-numeric:tabular-nums;
+margin-left:20px;
 }
 
-/* ANIMAÇÃO */
-@keyframes scrollLeft {
-    0%   { transform: translateX(100vw); }
-    100% { transform: translateX(-100%); }
+@keyframes scrollLeft{
+0%{transform:translateX(100vw)}
+100%{transform:translateX(-100%)}
 }
+
 </style>
 </head>
 
 <body>
 
-<iframe id="slide-frame" class="presentation-frame" allowfullscreen></iframe>
+<iframe id="slide-frame" class="presentation-frame"></iframe>
 
 <div class="info-bar">
 
-    <div class="left-group">
-        <div class="logo-box">
-            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school101/files/2024-03/31653_marca_guri_azul_vertical_3.png">
-        </div>
-        <div class="vertical-divider"></div>
-        <div class="date-display">
-            <div id="day-line" class="day-line">...</div>
-            <div id="date-line" class="date-line">...</div>
-        </div>
-    </div>
+<div class="left-group">
 
-    <div class="marquee-container">
-        <div id="marquee-text" class="marquee-content">Carregando notícias...</div>
-    </div>
+<div class="logo-box">
+<img src="https://d24d7vsshzrslo.cloudfront.net/sites/school69/files/2024-09/land_stacked_cmyk_colour_11x.png">
+</div>
 
-    <div class="right-group">
-        <div class="weather-container">
-            <div class="weather-icon-box">
-                <img id="weather-icon-img">
-            </div>
-            <div>
-                <div class="weather-temp" id="weather-temp">--°C</div>
-                <div class="weather-city">Salvador - BA</div>
-            </div>
-        </div>
-        <div class="vertical-divider"></div>
-        <div class="time-display" id="time-container">--:--</div>
-    </div>
+<div class="vertical-divider"></div>
+
+<div class="date-display">
+<div id="day-line" class="day-line"></div>
+<div id="date-line" class="date-line"></div>
+</div>
+
+</div>
+
+<div class="marquee-container">
+<div id="marquee-text" class="marquee-content">Carregando Notícias...</div>
+</div>
+
+<div class="right-group">
+
+<div class="weather-container">
+<div class="weather-icon-box">
+<img id="weather-icon-img">
+</div>
+
+<div>
+<div class="weather-temp" id="weather-temp">--°C</div>
+<div class="weather-city">Salvador - BA</div>
+</div>
+</div>
+
+
+
+<div class="vertical-divider"></div>
+
+<div class="time-display" id="time-container">--:--</div>
+
+</div>
 
 </div>
 
 <script>
 
 /* CONFIG */
-const SHEET_ID = '1mvBjvJsXZNtePRypUXrMF-CX36Fsgwse';
-const VELOCIDADE_PX_SEG = 110;
-const CLIMA_INTERVALO = 10 * 60 * 1000;
+
+const SLIDE_URL="https://docs.google.com/presentation/d/1-up52stUKy2zAgLo96c36cKeYDCK1_RP/embed?start=true&loop=true&rm=minimal&delayms=60000"
+const SHEET_ID="1mvBjvJsXZNtePRypUXrMF-CX36Fsgwse"
+const VELOCIDADE_PX_SEG=120
+
+const WEATHER_API="https://api.openweathermap.org/data/2.5/weather?q=Salvador&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
 
 /* SLIDES */
-const SLIDE_URL = "https://docs.google.com/presentation/d/1-up52stUKy2zAgLo96c36cKeYDCK1_RP/embed?start=true&loop=true&rm=minimal&delayms=60000";
-document.getElementById('slide-frame').src = SLIDE_URL;
+
+function loadSlides(){
+document.getElementById("slide-frame").src=SLIDE_URL+"&t="+Date.now()
+}
+
+loadSlides()
+
+setInterval(loadSlides,900000)
+setInterval(()=>location.reload(),5580000)
 
 /* RELÓGIO */
-function updateClock() {
-    const now = new Date();
-    const tz = 'America/Sao_Paulo';
 
-    const day = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', timeZone: tz }).format(now);
-    const date = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: tz }).format(now);
-    const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', timeZone: tz });
+function updateClock(){
 
-    document.getElementById('day-line').textContent = day.charAt(0).toUpperCase() + day.slice(1);
-    document.getElementById('date-line').textContent = date;
-    document.getElementById('time-container').textContent = time;
+const now=new Date()
+
+let rawDay=new Intl.DateTimeFormat("pt-BR",{weekday:"long"}).format(now)
+const day=rawDay.charAt(0).toUpperCase()+rawDay.slice(1)
+
+const date=new Intl.DateTimeFormat("pt-BR",{day:"numeric",month:"long",year:"numeric"}).format(now)
+const time=now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})
+
+document.getElementById("day-line").textContent=day
+document.getElementById("date-line").textContent=date
+document.getElementById("time-container").textContent=time
+
 }
-setInterval(updateClock, 1000);
-updateClock();
+
+setInterval(updateClock,1000)
+updateClock()
 
 /* CLIMA */
-async function fetchWeather() {
-    const apiKey = "ff0a9d4e6f632ea18d6ce175c676d736";
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=Salvador&appid=${apiKey}&units=metric&lang=pt_br`;
 
-    try {
-        const res = await fetch(url);
-        const data = await res.json();
-        document.getElementById('weather-temp').textContent = `${Math.round(data.main.temp)}°C`;
-        document.getElementById('weather-icon-img').src =
-            `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-    } catch {}
-}
-fetchWeather();
-setInterval(fetchWeather, CLIMA_INTERVALO);
+async function fetchWeather(){
 
-/* NOTÍCIAS */
-const marquee = document.getElementById('marquee-text');
-let duracaoAtual = 120;
+try{
 
-async function fetchNews() {
-    try {
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
-        const res = await fetch(url);
-        const text = await res.text();
+const res=await fetch(WEATHER_API)
+const data=await res.json()
 
-        const lines = text.split('\n').slice(1);
-        const news = lines
-            .map(l => l.replace(/^"|"$/g, '').replace(/""/g, '"').trim())
-            .filter(Boolean);
+document.getElementById("weather-temp").textContent=Math.round(data.main.temp)+"°C"
+document.getElementById("weather-icon-img").src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
 
-        marquee.innerHTML = (news.length ? news : ["Bem-vindo à Land School"])
-            .join('<span class="separator">|</span>');
+}catch{}
 
-        setTimeout(() => {
-            const wText = marquee.offsetWidth;
-            const wScreen = window.innerWidth;
-
-            duracaoAtual = (wText + wScreen) / VELOCIDADE_PX_SEG;
-
-            marquee.style.animation = 'none';
-            marquee.offsetHeight;
-            marquee.style.animation = `scrollLeft ${duracaoAtual}s linear infinite`;
-        }, 120);
-
-    } catch {}
 }
 
-async function cicloNoticias() {
-    await fetchNews();
-    setTimeout(cicloNoticias, duracaoAtual * 1000);
+fetchWeather()
+setInterval(fetchWeather,900000)
+
+/* NEWS */
+
+const marquee=document.getElementById("marquee-text")
+let duracaoAtual = 120
+
+async function fetchNews(){
+
+try{
+
+const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
+const res=await fetch(url)
+const text=await res.text()
+
+const lines=text.split("\n").slice(1)
+
+const news=lines
+.map(l=>l.replace(/"/g,"").trim())
+.filter(Boolean)
+
+marquee.innerHTML=news.join('<span class="separator">|</span>')
+
+setTimeout(()=>{
+
+const larguraTexto=marquee.offsetWidth
+const larguraTela=window.innerWidth
+
+duracaoAtual=(larguraTexto+larguraTela)/VELOCIDADE_PX_SEG
+
+marquee.style.animation="none"
+marquee.offsetHeight
+marquee.style.animation=`scrollLeft ${duracaoAtual}s linear infinite`
+
+},100)
+
+}catch{}
+
 }
 
-cicloNoticias();
+/* 🔥 CICLO INTELIGENTE */
 
-/* ESTABILIDADE */
-setTimeout(() => location.reload(true), 86400000);
+async function cicloNoticias(){
+await fetchNews()
+setTimeout(cicloNoticias, duracaoAtual * 1000)
+}
+
+cicloNoticias()
 
 /* FULLSCREEN */
-function openFullScreen() {
-    if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-    }
+
+function openFullscreen(){
+
+const elem=document.documentElement
+
+if(elem.requestFullscreen)elem.requestFullscreen()
+else if(elem.webkitRequestFullscreen)elem.webkitRequestFullscreen()
+
 }
-window.addEventListener("load", () => setTimeout(openFullScreen, 3000));
-document.body.addEventListener("click", openFullScreen);
+
+setTimeout(openFullscreen,2000)
 
 </script>
 
