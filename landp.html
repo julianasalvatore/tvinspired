@@ -246,13 +246,18 @@ const WEATHER_API="https://api.openweathermap.org/data/2.5/weather?q=Salvador&ap
 /* SLIDES */
 
 function loadSlides(){
-document.getElementById("slide-frame").src=SLIDE_URL+"&t="+Date.now()
+  const frame = document.getElementById("slide-frame")
+  frame.src = "about:blank"
+
+  setTimeout(()=>{
+    frame.src = SLIDE_URL + "&t=" + Date.now()
+  }, 500)
 }
 
 loadSlides()
 
 setInterval(loadSlides,900000)
-setInterval(()=>location.reload(),5580000)
+setInterval(()=>location.reload(),1800000)
 
 /* RELÓGIO */
 
@@ -322,9 +327,7 @@ const larguraTela=window.innerWidth
 
 duracaoAtual=(larguraTexto+larguraTela)/VELOCIDADE_PX_SEG
 
-marquee.style.animation="none"
-marquee.offsetHeight
-marquee.style.animation=`scrollLeft ${duracaoAtual}s linear infinite`
+marquee.style.animation = `scrollLeft ${duracaoAtual}s linear infinite`
 
 },100)
 
@@ -334,12 +337,8 @@ marquee.style.animation=`scrollLeft ${duracaoAtual}s linear infinite`
 
 /* 🔥 CICLO INTELIGENTE */
 
-async function cicloNoticias(){
-await fetchNews()
-setTimeout(cicloNoticias, duracaoAtual * 1000)
-}
-
-cicloNoticias()
+fetchNews()
+setInterval(fetchNews, 60000) // atualiza a cada 1 minuto
 
 /* FULLSCREEN */
 
@@ -353,6 +352,16 @@ else if(elem.webkitRequestFullscreen)elem.webkitRequestFullscreen()
 }
 
 setTimeout(openFullscreen,2000)
+
+setTimeout(openFullscreen,2000)
+
+/* WATCHDOG - evita tela branca */
+setInterval(() => {
+  if (!document.body.innerHTML.trim()) {
+    location.reload()
+  }
+}, 60000)
+
 
 </script>
 
