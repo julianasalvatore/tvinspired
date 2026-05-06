@@ -249,7 +249,12 @@ document.getElementById("slide-frame").src=SLIDE_URL+"&t="+Date.now()
 
 loadSlides()
 
+/* reinicia slides */
+
 setInterval(loadSlides,900000)
+
+/* reload total kiosk */
+
 setInterval(()=>location.reload(),5580000)
 
 /* RELÓGIO */
@@ -290,12 +295,11 @@ document.getElementById("weather-icon-img").src=`https://openweathermap.org/img/
 }
 
 fetchWeather()
-setInterval(fetchWeather,900000)
+setInterval(fetchWeather,600000)
 
 /* NEWS */
 
 const marquee=document.getElementById("marquee-text")
-let duracaoAtual = 120
 
 async function fetchNews(){
 
@@ -317,12 +321,11 @@ setTimeout(()=>{
 
 const larguraTexto=marquee.offsetWidth
 const larguraTela=window.innerWidth
-
-duracaoAtual=(larguraTexto+larguraTela)/VELOCIDADE_PX_SEG
+const duracao=(larguraTexto+larguraTela)/VELOCIDADE_PX_SEG
 
 marquee.style.animation="none"
 marquee.offsetHeight
-marquee.style.animation=`scrollLeft ${duracaoAtual}s linear infinite`
+marquee.style.animation=`scrollLeft ${duracao}s linear infinite`
 
 },100)
 
@@ -330,14 +333,8 @@ marquee.style.animation=`scrollLeft ${duracaoAtual}s linear infinite`
 
 }
 
-/* 🔥 CICLO INTELIGENTE */
-
-async function cicloNoticias(){
-await fetchNews()
-setTimeout(cicloNoticias, duracaoAtual * 1000)
-}
-
-cicloNoticias()
+fetchNews()
+setInterval(fetchNews,60000)
 
 /* FULLSCREEN */
 
