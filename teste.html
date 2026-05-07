@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Inspired News</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Land School News</title>
 
 <style>
 
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
+* { box-sizing:border-box;margin:0;padding:0 }
 
 html,body{
 width:100%;
@@ -31,7 +27,6 @@ width:100%;
 height:100%;
 border:none;
 z-index:1;
-background:#000;
 }
 
 /* BARRA */
@@ -44,7 +39,7 @@ width:100%;
 height:13%;
 min-height:90px;
 z-index:999;
-background:#0872eb;
+background:#0b1c5a;
 color:#fff;
 display:flex;
 align-items:center;
@@ -53,21 +48,14 @@ padding:0 2rem;
 box-shadow:0 -4px 20px rgba(0,0,0,.4);
 }
 
-.left-group,
-.right-group{
+.left-group{
 display:flex;
 align-items:center;
 height:100%;
 flex:0 0 auto;
-z-index:1000;
-}
-
-.left-group{
+background:#0b1c5a;
 padding-right:20px;
-}
-
-.right-group{
-padding-left:20px;
+z-index:1000;
 }
 
 .logo-box{
@@ -80,6 +68,7 @@ align-items:center;
 justify-content:center;
 padding:5px;
 margin-right:20px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
 .logo-box img{
@@ -122,27 +111,37 @@ position:relative;
 overflow:hidden;
 display:flex;
 align-items:center;
+
+mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
+-webkit-mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
 }
 
 .marquee-content{
 position:absolute;
 white-space:nowrap;
 display:inline-block;
+will-change:transform;
 color:#fff;
 font-size:3.5vh;
 font-weight:600;
 letter-spacing:.5px;
 text-shadow:1px 1px 3px rgba(0,0,0,.2);
-
-/* otimização Tizen */
-transform:translate3d(0,0,0);
-backface-visibility:hidden;
 }
 
 .separator{
 color:rgba(255,255,255,.5);
 margin:0 40px;
 font-weight:300;
+}
+
+.right-group{
+display:flex;
+align-items:center;
+height:100%;
+flex:0 0 auto;
+background:#0b1c5a;
+padding-left:20px;
+z-index:1000;
 }
 
 .weather-container{
@@ -171,6 +170,7 @@ opacity:.9;
 }
 
 .time-display{
+color:#fff;
 font-size:5vh;
 font-weight:700;
 font-variant-numeric:tabular-nums;
@@ -178,13 +178,8 @@ margin-left:20px;
 }
 
 @keyframes scrollLeft{
-0%{
-transform:translateX(100vw);
-}
-
-100%{
-transform:translateX(-100%);
-}
+0%{transform:translateX(100vw)}
+100%{transform:translateX(-100%)}
 }
 
 </style>
@@ -192,18 +187,14 @@ transform:translateX(-100%);
 
 <body>
 
-<iframe
-id="slide-frame"
-class="presentation-frame"
-allowfullscreen>
-</iframe>
+<iframe id="slide-frame" class="presentation-frame"></iframe>
 
 <div class="info-bar">
 
 <div class="left-group">
 
 <div class="logo-box">
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4qKiSKB6nqMH1cAvy1qJZ0Xi2vis3FXWmlw&s">
+<img src="https://d24d7vsshzrslo.cloudfront.net/sites/school69/files/2024-09/land_stacked_cmyk_colour_11x.png">
 </div>
 
 <div class="vertical-divider"></div>
@@ -216,31 +207,27 @@ allowfullscreen>
 </div>
 
 <div class="marquee-container">
-<div id="marquee-text" class="marquee-content">
-Carregando notícias...
-</div>
+<div id="marquee-text" class="marquee-content">Carregando Notícias...</div>
 </div>
 
 <div class="right-group">
 
 <div class="weather-container">
-
 <div class="weather-icon-box">
 <img id="weather-icon-img">
 </div>
 
 <div>
-<div id="weather-temp" class="weather-temp">--°C</div>
-<div class="weather-city">Rio de Janeiro – RJ</div>
+<div class="weather-temp" id="weather-temp">--°C</div>
+<div class="weather-city">Salvador - BA</div>
+</div>
 </div>
 
-</div>
+
 
 <div class="vertical-divider"></div>
 
-<div id="time-container" class="time-display">
---:--
-</div>
+<div class="time-display" id="time-container">--:--</div>
 
 </div>
 
@@ -248,229 +235,124 @@ Carregando notícias...
 
 <script>
 
-/* =========================
-CONFIG
-========================= */
+/* CONFIG */
 
-const SLIDE_URL =
-"https://docs.google.com/presentation/d/11YYUb321jAQMPU1xfhPQKa35464Iow3N/embed?start=true&loop=true&rm=minimal&delayms=60000"
+const SLIDE_URL="https://docs.google.com/presentation/d/1-up52stUKy2zAgLo96c36cKeYDCK1_RP/embed?start=true&loop=true&rm=minimal&delayms=60000"
+const SHEET_ID="1mvBjvJsXZNtePRypUXrMF-CX36Fsgwse"
+const VELOCIDADE_PX_SEG=120
 
-const SHEET_ID =
-"1MFHtG8r4pwrY_tA2yFWEC6gZISJgO05e"
+const WEATHER_API="https://api.openweathermap.org/data/2.5/weather?q=Salvador&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
 
-const VELOCIDADE_PX_SEG = 120
+/* SLIDES */
 
-const WEATHER_API =
-"https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
-
-/* =========================
-SLIDES
-========================= */
-
-const iframe = document.getElementById("slide-frame")
-
-iframe.src = SLIDE_URL
-
-/* watchdog iframe */
-
-let iframeLoaded = true
-
-iframe.onload = () => {
-iframeLoaded = true
+function loadSlides(){
+document.getElementById("slide-frame").src=SLIDE_URL+"&t="+Date.now()
 }
 
-/* verifica se iframe travou */
+loadSlides()
 
-setInterval(() => {
+setInterval(loadSlides,900000)
+setInterval(()=>location.reload(),5580000)
 
-if (!iframeLoaded) {
-
-console.log("iframe travado, reiniciando")
-
-iframe.src = SLIDE_URL + "&t=" + Date.now()
-
-}
-
-iframeLoaded = false
-
-}, 300000)
-
-/* =========================
-RELÓGIO
-========================= */
+/* RELÓGIO */
 
 function updateClock(){
 
-const now = new Date()
+const now=new Date()
 
-const rawDay =
-new Intl.DateTimeFormat("pt-BR",{
-weekday:"long",
-timeZone:"America/Sao_Paulo"
-}).format(now)
+let rawDay=new Intl.DateTimeFormat("pt-BR",{weekday:"long"}).format(now)
+const day=rawDay.charAt(0).toUpperCase()+rawDay.slice(1)
 
-const day =
-rawDay.charAt(0).toUpperCase() +
-rawDay.slice(1)
+const date=new Intl.DateTimeFormat("pt-BR",{day:"numeric",month:"long",year:"numeric"}).format(now)
+const time=now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})
 
-const date =
-new Intl.DateTimeFormat("pt-BR",{
-day:"numeric",
-month:"long",
-year:"numeric",
-timeZone:"America/Sao_Paulo"
-}).format(now)
-
-const time =
-now.toLocaleTimeString("pt-BR",{
-hour:"2-digit",
-minute:"2-digit",
-timeZone:"America/Sao_Paulo"
-})
-
-document.getElementById("day-line").textContent = day
-document.getElementById("date-line").textContent = date
-document.getElementById("time-container").textContent = time
+document.getElementById("day-line").textContent=day
+document.getElementById("date-line").textContent=date
+document.getElementById("time-container").textContent=time
 
 }
 
 setInterval(updateClock,1000)
 updateClock()
 
-/* =========================
-CLIMA
-========================= */
+/* CLIMA */
 
 async function fetchWeather(){
 
 try{
 
-const res = await fetch(WEATHER_API)
-const data = await res.json()
+const res=await fetch(WEATHER_API)
+const data=await res.json()
 
-document.getElementById("weather-temp").textContent =
-Math.round(data.main.temp) + "°C"
+document.getElementById("weather-temp").textContent=Math.round(data.main.temp)+"°C"
+document.getElementById("weather-icon-img").src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
 
-document.getElementById("weather-icon-img").src =
-`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
-
-}catch(e){
-
-console.log("erro clima")
-
-}
+}catch{}
 
 }
 
 fetchWeather()
+setInterval(fetchWeather,900000)
 
-setInterval(fetchWeather,600000)
+/* NEWS */
 
-/* =========================
-NEWS
-========================= */
-
-const marquee =
-document.getElementById("marquee-text")
-
-let ultimaNoticia = ""
+const marquee=document.getElementById("marquee-text")
+let duracaoAtual = 120
 
 async function fetchNews(){
 
 try{
 
-const url =
-`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
+const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
+const res=await fetch(url)
+const text=await res.text()
 
-const res = await fetch(url)
+const lines=text.split("\n").slice(1)
 
-const text = await res.text()
-
-const lines =
-text.split("\n").slice(1)
-
-const news = lines
-.map(l => l.replace(/"/g,"").trim())
+const news=lines
+.map(l=>l.replace(/"/g,"").trim())
 .filter(Boolean)
 
-const html =
-news.join('<span class="separator">|</span>')
+marquee.innerHTML=news.join('<span class="separator">|</span>')
 
-/* evita recriar DOM sem necessidade */
+setTimeout(()=>{
 
-if(html === ultimaNoticia) return
+const larguraTexto=marquee.offsetWidth
+const larguraTela=window.innerWidth
 
-ultimaNoticia = html
+duracaoAtual=(larguraTexto+larguraTela)/VELOCIDADE_PX_SEG
 
-marquee.innerHTML = html
-
-setTimeout(() => {
-
-const larguraTexto = marquee.offsetWidth
-const larguraTela = window.innerWidth
-
-const duracao =
-(larguraTexto + larguraTela) /
-VELOCIDADE_PX_SEG
-
-marquee.style.animation = "none"
-
-void marquee.offsetWidth
-
-marquee.style.animation =
-`scrollLeft ${duracao}s linear infinite`
+marquee.style.animation="none"
+marquee.offsetHeight
+marquee.style.animation=`scrollLeft ${duracaoAtual}s linear infinite`
 
 },100)
 
-}catch(e){
-
-console.log("erro news")
+}catch{}
 
 }
 
+/* 🔥 CICLO INTELIGENTE */
+
+async function cicloNoticias(){
+await fetchNews()
+setTimeout(cicloNoticias, duracaoAtual * 1000)
 }
 
-fetchNews()
+cicloNoticias()
 
-setInterval(fetchNews,60000)
+/* FULLSCREEN */
 
-/* =========================
-ANTI TELA BRANCA
-========================= */
+function openFullscreen(){
 
-/* detecta render quebrado */
+const elem=document.documentElement
 
-setInterval(() => {
-
-const bodyVazio =
-!document.body.innerHTML.trim()
-
-const iframeSemSrc =
-!iframe.src
-
-if(bodyVazio || iframeSemSrc){
-
-console.log("tela branca detectada")
-
-location.reload()
+if(elem.requestFullscreen)elem.requestFullscreen()
+else if(elem.webkitRequestFullscreen)elem.webkitRequestFullscreen()
 
 }
 
-},60000)
-
-/* =========================
-ANTI MEMORY LEAK
-========================= */
-
-/* reload leve apenas 1x ao dia */
-
-setInterval(() => {
-
-console.log("reload preventivo")
-
-location.reload()
-
-},86400000)
+setTimeout(openFullscreen,2000)
 
 </script>
 

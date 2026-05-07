@@ -3,404 +3,368 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Gurilandia News</title>
+<title>Guri Federeção News
+</title>
+
 <style>
-    /* Reset e Base */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    html, body { 
-        width: 100%; 
-        height: 100%; 
-        background-color: #000; 
-        font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-        overflow: hidden; 
-    }
 
-    /* 1. IFRAME (SLIDES) */
-    .presentation-frame {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%; 
-        border: none;
-        z-index: 1; /* Fica no fundo */
-    }
+* { box-sizing:border-box;margin:0;padding:0 }
 
-    /* 2. BARRA DE INFORMAÇÕES (OVERLAY) */
-    .info-bar {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 13%; /* Altura da barra */
-        min-height: 90px;
-        z-index: 999; /* Garante que fique SOBRE o slide */
-        
-        background-color: #0b5a17; /* Verde Gurilandia */
-        color: #fff;
-        
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 2rem;
-        
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.4); 
-    }
+html,body{
+width:100%;
+height:100%;
+background:#000;
+font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+overflow:hidden;
+}
 
-    /* --- GRUPO ESQUERDA (Logo e Data) --- */
-    .left-group {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        flex: 0 0 auto;
-        background-color: #0b5a17; 
-        padding-right: 20px;
-        z-index: 1000;
-    }
+/* SLIDES */
 
-    .logo-box {
-        background: #ffffff;
-        border-radius: 12px;
-        height: 75%; 
-        aspect-ratio: 1 / 1; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 5px;
-        margin-right: 20px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    
-    .logo-box img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
+.presentation-frame{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+border:none;
+z-index:1;
+}
 
-    .vertical-divider {
-        width: 2px;
-        height: 60%;
-        background-color: rgba(255,255,255,0.3);
-        margin-right: 20px;
-    }
+/* BARRA */
 
-    .date-display {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        color: #fff;
-    }
-    
-    .day-line {
-        font-size: 3.2vh;
-        font-weight: 800;
-        line-height: 1.1;
-        text-transform: capitalize;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    }
+.info-bar{
+position:absolute;
+bottom:0;
+left:0;
+width:100%;
+height:13%;
+min-height:90px;
+z-index:999;
+background:#0b1c5a;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 2rem;
+box-shadow:0 -4px 20px rgba(0,0,0,.4);
+}
 
-    .date-line {
-        font-size: 1.8vh;
-        font-weight: 400;
-        opacity: 0.95;
-    }
+.left-group{
+display:flex;
+align-items:center;
+height:100%;
+flex:0 0 auto;
+background:#0b1c5a;
+padding-right:20px;
+z-index:1000;
+}
 
-    /* --- CENTRO (Notícias / Marquee) --- */
-    .marquee-container {
-        flex: 1; /* Ocupa todo o espaço disponível no meio */
-        height: 100%;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
-        -webkit-mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
-    }
+.logo-box{
+background:#fff;
+border-radius:12px;
+height:75%;
+aspect-ratio:1/1;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:5px;
+margin-right:20px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
 
-    .marquee-content {
-        position: absolute;
-        white-space: nowrap;
-        will-change: transform;
-        color: #fff;
-        font-size: 3vh; 
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-    }
+.logo-box img{
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+}
 
-    .separator {
-        color: rgba(255,255,255,0.5);
-        margin: 0 30px;
-        font-weight: 300;
-    }
+.vertical-divider{
+width:2px;
+height:60%;
+background:rgba(255,255,255,.3);
+margin-right:20px;
+}
 
-    /* --- GRUPO DIREITA (Clima e Hora) --- */
-    .right-group {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        flex: 0 0 auto;
-        background-color: #0b5a17; /* Fundo sólido */
-        padding-left: 20px;
-        z-index: 1000;
-    }
+.date-display{
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
 
-    .weather-container {
-        display: flex;
-        align-items: center;
-        margin-right: 20px;
-    }
+.day-line{
+font-size:3.2vh;
+font-weight:800;
+line-height:1.1;
+text-transform:capitalize;
+}
 
-    .weather-icon-box img {
-        width: 42px;
-        height: 42px;
-        filter: brightness(0) invert(1) drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
-        margin-right: 10px;
-    }
+.date-line{
+font-size:1.8vh;
+opacity:.95;
+}
 
-    .weather-text {
-        text-align: left;
-        color: #fff;
-    }
+/* NEWS */
 
-    .weather-temp {
-        font-size: 3.5vh;
-        font-weight: 800;
-        line-height: 1;
-    }
+.marquee-container{
+flex:1;
+height:100%;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:center;
 
-    .weather-city {
-        font-size: 1.5vh;
-        font-weight: 600;
-        margin-top: 3px;
-        opacity: 0.9;
-    }
+mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
+-webkit-mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);
+}
 
-    .time-display {
-        color: #fff;
-        font-size: 5vh;
-        font-weight: 700;
-        font-variant-numeric: tabular-nums;
-        line-height: 1;
-        margin-left: 20px;
-        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-    }
+.marquee-content{
+position:absolute;
+white-space:nowrap;
+display:inline-block;
+will-change:transform;
+color:#fff;
+font-size:3.5vh;
+font-weight:600;
+letter-spacing:.5px;
+text-shadow:1px 1px 3px rgba(0,0,0,.2);
+}
 
-    /* Animação do Letreiro */
-    @keyframes scrollLeft {
-        0% { transform: translateX(100%); }
-        100% { transform: translateX(-100%); }
-    }
+.separator{
+color:rgba(255,255,255,.5);
+margin:0 40px;
+font-weight:300;
+}
+
+.right-group{
+display:flex;
+align-items:center;
+height:100%;
+flex:0 0 auto;
+background:#0b1c5a;
+padding-left:20px;
+z-index:1000;
+}
+
+.weather-container{
+display:flex;
+align-items:center;
+margin-right:20px;
+}
+
+.weather-icon-box img{
+width:50px;
+height:50px;
+filter:brightness(0) invert(1);
+margin-right:5px;
+}
+
+.weather-temp{
+font-size:3.5vh;
+font-weight:800;
+line-height:1;
+}
+
+.weather-city{
+font-size:1.5vh;
+font-weight:600;
+opacity:.9;
+}
+
+.time-display{
+color:#fff;
+font-size:5vh;
+font-weight:700;
+font-variant-numeric:tabular-nums;
+margin-left:20px;
+}
+
+@keyframes scrollLeft{
+0%{transform:translateX(100vw)}
+100%{transform:translateX(-100%)}
+}
 
 </style>
 </head>
+
 <body>
 
-    <iframe 
-        id="slide-frame"
-        class="presentation-frame"
-        src="" 
-        allowfullscreen="true" 
-        mozallowfullscreen="true" 
-        webkitallowfullscreen="true">
-    </iframe>
+<iframe id="slide-frame" class="presentation-frame"></iframe>
 
-    <div class="info-bar">
-        
-        <div class="left-group">
-            <div class="logo-box">
-                <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school101/files/2024-03/31653_marca_guri_azul_vertical_3.png" alt="Logo">
-            </div>
-            <div class="vertical-divider"></div>
-            <div class="date-display">
-                <div id="day-line" class="day-line">Carregando...</div>
-                <div id="date-line" class="date-line">...</div>
-            </div>
-        </div>
-        
-        <div class="marquee-container">
-            <div id="marquee-text" class="marquee-content">
-                Carregando Notícias...
-            </div>
-        </div>
-        
-        <div class="right-group">
-            <div class="weather-container">
-                <div class="weather-icon-box">
-                    <img id="weather-icon-img" src="" alt="">
-                </div>
-                <div class="weather-text">
-                    <div class="weather-temp" id="weather-temp">--°C</div>
-                    <div class="weather-city">Salvador – BA</div>
-                </div>
-            </div>
-            <div class="vertical-divider"></div>
-            <div class="time-display" id="time-container">
-                --:--:--
-            </div>
-        </div>
+<div class="info-bar">
 
-    </div>
+<div class="left-group">
 
-    <script>
-        // ==========================================
-        // CONFIGURAÇÕES GERAIS
-        // ==========================================
-        
-        // ID DA PLANILHA (Gurilandia)
-        const SHEET_ID = '1YLYjBylyDc1nFmRaSHCH8HhURQzVEDGW'; 
-        const TEMPO_ROLAGEM = 35; 
-        
-        // ==========================================
-        // 1. SLIDES (Google Presentation)
-        // ==========================================
-        function getQueryParam(param, defaultValue) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param) || defaultValue;
-        }
+<div class="logo-box">
+<img src="https://d24d7vsshzrslo.cloudfront.net/sites/school101/files/2024-03/31653_marca_guri_azul_vertical_3.png">
+</div>
 
-        // SLIDE URL (ID: 1wqchJ4r5h7eEeX-TrlWpObnm1mx5jh81)
-        // Convertido para formato EMBED para rodar sozinho
-        const defaultSlideUrl = "https://docs.google.com/presentation/d/1wqchJ4r5h7eEeX-TrlWpObnm1mx5jh81/embed?start=true&loop=true&rm=minimal&delayms=10000";
-        
-        const slideUrl = getQueryParam('embed', defaultSlideUrl);
-        const refreshInterval = parseInt(getQueryParam('refresh', '3600000'), 10);
+<div class="vertical-divider"></div>
 
-        document.getElementById('slide-frame').src = slideUrl;
+<div class="date-display">
+<div id="day-line" class="day-line"></div>
+<div id="date-line" class="date-line"></div>
+</div>
+
+</div>
+
+<div class="marquee-container">
+<div id="marquee-text" class="marquee-content">Carregando Notícias...</div>
+</div>
+
+<div class="right-group">
+
+<div class="weather-container">
+<div class="weather-icon-box">
+<img id="weather-icon-img">
+</div>
+
+<div>
+<div class="weather-temp" id="weather-temp">--°C</div>
+<div class="weather-city">Salvador - BA</div>
+</div>
+</div>
 
 
-        // ==========================================
-        // 2. RELÓGIO & DATA (Brasília)
-        // ==========================================
-        function formatDiaSemana(diaBruto){
-            return diaBruto.toLowerCase().split('-').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('-');
-        }
 
-        function updateClock() {
-            const now = new Date();
-            const TIMEZONE = 'America/Sao_Paulo';
-            
-            let rawDay = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', timeZone: TIMEZONE }).format(now);
-            const dayFormatted = formatDiaSemana(rawDay);
-            
-            const dateRest = new Intl.DateTimeFormat('pt-BR', { 
-                day: 'numeric', month: 'long', year: 'numeric', timeZone: TIMEZONE 
-            }).format(now);
-            
-            const timeString = now.toLocaleTimeString('pt-BR', {
-                hour: '2-digit', minute: '2-digit', hour12: false, timeZone: TIMEZONE
-            });
+<div class="vertical-divider"></div>
 
-            document.getElementById('day-line').textContent = dayFormatted;
-            document.getElementById('date-line').textContent = dateRest;
-            document.getElementById('time-container').textContent = timeString;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+<div class="time-display" id="time-container">--:--</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* CONFIG */
+
+const SLIDE_URL="https://docs.google.com/presentation/d/1wqchJ4r5h7eEeX-TrlWpObnm1mx5jh81/embed?start=true&loop=true&rm=minimal&delayms=60000"
+const SHEET_ID="1YLYjBylyDc1nFmRaSHCH8HhURQzVEDGW"
+const VELOCIDADE_PX_SEG=120
+
+const WEATHER_API="https://api.openweathermap.org/data/2.5/weather?q=Salvador&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
+
+/* SLIDES */
+
+function loadSlides(){
+  const frame = document.getElementById("slide-frame")
+  frame.src = "about:blank"
+
+  setTimeout(()=>{
+    frame.src = SLIDE_URL + "&t=" + Date.now()
+  }, 500)
+}
+
+loadSlides()
+
+setInterval(loadSlides,900000)
+setInterval(()=>location.reload(),1800000)
+
+/* RELÓGIO */
+
+function updateClock(){
+
+const now=new Date()
+
+let rawDay=new Intl.DateTimeFormat("pt-BR",{weekday:"long"}).format(now)
+const day=rawDay.charAt(0).toUpperCase()+rawDay.slice(1)
+
+const date=new Intl.DateTimeFormat("pt-BR",{day:"numeric",month:"long",year:"numeric"}).format(now)
+const time=now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})
+
+document.getElementById("day-line").textContent=day
+document.getElementById("date-line").textContent=date
+document.getElementById("time-container").textContent=time
+
+}
+
+setInterval(updateClock,1000)
+updateClock()
+
+/* CLIMA */
+
+async function fetchWeather(){
+
+try{
+
+const res=await fetch(WEATHER_API)
+const data=await res.json()
+
+document.getElementById("weather-temp").textContent=Math.round(data.main.temp)+"°C"
+document.getElementById("weather-icon-img").src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+
+}catch{}
+
+}
+
+fetchWeather()
+setInterval(fetchWeather,900000)
+
+/* NEWS */
+
+const marquee=document.getElementById("marquee-text")
+let duracaoAtual = 120
+
+async function fetchNews(){
+
+try{
+
+const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
+const res=await fetch(url)
+const text=await res.text()
+
+const lines=text.split("\n").slice(1)
+
+const news=lines
+.map(l=>l.replace(/"/g,"").trim())
+.filter(Boolean)
+
+marquee.innerHTML=news.join('<span class="separator">|</span>')
+
+setTimeout(()=>{
+
+const larguraTexto=marquee.offsetWidth
+const larguraTela=window.innerWidth
+
+duracaoAtual=(larguraTexto+larguraTela)/VELOCIDADE_PX_SEG
+
+marquee.style.animation = `scrollLeft ${duracaoAtual}s linear infinite`
+
+},100)
+
+}catch{}
+
+}
+
+/* 🔥 CICLO INTELIGENTE */
+
+fetchNews()
+setInterval(fetchNews, 60000) // atualiza a cada 1 minuto
+
+/* FULLSCREEN */
+
+function openFullscreen(){
+
+const elem=document.documentElement
+
+if(elem.requestFullscreen)elem.requestFullscreen()
+else if(elem.webkitRequestFullscreen)elem.webkitRequestFullscreen()
+
+}
+
+setTimeout(openFullscreen,2000)
+
+setTimeout(openFullscreen,2000)
+
+/* WATCHDOG - evita tela branca */
+setInterval(() => {
+  if (!document.body.innerHTML.trim()) {
+    location.reload()
+  }
+}, 60000)
 
 
-        // ==========================================
-        // 3. CLIMA (OpenWeather - Salvador)
-        // ==========================================
-        async function fetchWeather() {
-            const apiKey = "ff0a9d4e6f632ea18d6ce175c676d736"; 
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=Salvador&appid=${apiKey}&units=metric&lang=pt_br`;
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Erro API Clima");
-                const data = await response.json();
-                
-                const temp = Math.round(data.main.temp);
-                const iconCode = data.weather[0].icon;
-                
-                document.getElementById('weather-temp').textContent = `${temp}°C`;
-                document.getElementById('weather-icon-img').src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-                
-            } catch (error) {
-                console.error("Erro ao buscar clima:", error);
-            }
-        }
-        fetchWeather();
-        setInterval(fetchWeather, 1000); // 1 minuto
-
-
-        // ==========================================
-        // 4. NOTÍCIAS (Google Sheets - Ticker)
-        // ==========================================
-        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
-        const marqueeElement = document.getElementById('marquee-text');
-        let lastContentSignature = "";
-
-        async function fetchNews() {
-            try {
-                const response = await fetch(`${SHEET_URL}&t=${Date.now()}`);
-                const text = await response.text();
-                
-                const lines = text.split('\n');
-                const newsItems = [];
-
-                for(let i = 1; i < lines.length; i++) {
-                    let line = lines[i].trim();
-                    if(line.startsWith('"') && line.endsWith('"')) line = line.substring(1, line.length - 1);
-                    line = line.replace(/""/g, '"');
-                    
-                    if(line.length > 0) newsItems.push(line);
-                }
-
-                if(newsItems.length === 0) newsItems.push("Bem-vindo à Gurilandia");
-
-                const newContentHtml = newsItems.join('<span class="separator">|</span>');
-
-                if (newContentHtml !== lastContentSignature) {
-                    lastContentSignature = newContentHtml;
-                    marqueeElement.innerHTML = newContentHtml;
-                    marqueeElement.style.animation = 'none';
-                    marqueeElement.offsetHeight; 
-                    marqueeElement.style.animation = `scrollLeft ${TEMPO_ROLAGEM}s linear infinite`;
-                }
-
-            } catch (error) {
-                console.error("Erro notícias:", error);
-            }
-        }
-        
-        fetchNews();
-        setInterval(fetchNews, 4000); 
-
-
-        // ==========================================
-        // 5. REFRESH DE SEGURANÇA
-        // ==========================================
-        setInterval(() => {
-            console.log("Atualizando slide...");
-            const currentSrc = document.getElementById('slide-frame').src;
-            document.getElementById('slide-frame').src = currentSrc;
-        }, refreshInterval);
-
-        setTimeout(() => {
-            window.location.reload(true);
-        }, 86400000); // 24h
-
-    </script>
-    <script>
-    function openFullScreen() {
-        const elem = document.documentElement;
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { 
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { 
-            elem.msRequestFullscreen();
-        }
-    }
-
-    window.addEventListener("load", () => {
-        document.body.addEventListener('click', openFullScreen);
-        setTimeout(openFullScreen, 2000);
-    });
-    </script>
+</script>
 
 </body>
 </html>
