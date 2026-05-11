@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,7 +8,11 @@
 
 <style>
 
-* { box-sizing:border-box;margin:0;padding:0 }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
 html,body{
 width:100%;
@@ -17,7 +22,9 @@ font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 overflow:hidden;
 }
 
-/* SLIDES */
+/* =========================
+   SLIDES
+========================= */
 
 .presentation-frame{
 position:absolute;
@@ -27,9 +34,12 @@ width:100%;
 height:100%;
 border:none;
 z-index:1;
+background:#000;
 }
 
-/* BARRA */
+/* =========================
+   INFO BAR
+========================= */
 
 .info-bar{
 position:absolute;
@@ -102,7 +112,9 @@ font-size:1.8vh;
 opacity:.95;
 }
 
-/* NEWS */
+/* =========================
+   NEWS
+========================= */
 
 .marquee-container{
 flex:1;
@@ -126,6 +138,12 @@ font-size:3.5vh;
 font-weight:600;
 letter-spacing:.5px;
 text-shadow:1px 1px 3px rgba(0,0,0,.2);
+
+/* OTIMIZAÇÃO TIZEN */
+backface-visibility:hidden;
+-webkit-backface-visibility:hidden;
+perspective:1000px;
+transform:translateZ(0);
 }
 
 .separator{
@@ -133,6 +151,10 @@ color:rgba(255,255,255,.5);
 margin:0 40px;
 font-weight:300;
 }
+
+/* =========================
+   RIGHT SIDE
+========================= */
 
 .right-group{
 display:flex;
@@ -177,9 +199,17 @@ font-variant-numeric:tabular-nums;
 margin-left:20px;
 }
 
+/* =========================
+   ANIMATION
+========================= */
+
 @keyframes scrollLeft{
-0%{transform:translateX(100vw)}
-100%{transform:translateX(-100%)}
+0%{
+transform:translateX(100vw) translateZ(0);
+}
+100%{
+transform:translateX(-100%) translateZ(0);
+}
 }
 
 </style>
@@ -187,7 +217,12 @@ margin-left:20px;
 
 <body>
 
-<iframe id="slide-frame" class="presentation-frame"></iframe>
+<iframe
+id="slide-frame"
+class="presentation-frame"
+loading="eager"
+allowfullscreen>
+</iframe>
 
 <div class="info-bar">
 
@@ -207,12 +242,15 @@ margin-left:20px;
 </div>
 
 <div class="marquee-container">
-<div id="marquee-text" class="marquee-content">Carregando Notícias...</div>
+<div id="marquee-text" class="marquee-content">
+Carregando notícias...
+</div>
 </div>
 
 <div class="right-group">
 
 <div class="weather-container">
+
 <div class="weather-icon-box">
 <img id="weather-icon-img">
 </div>
@@ -221,11 +259,14 @@ margin-left:20px;
 <div id="weather-temp" class="weather-temp">--°C</div>
 <div class="weather-city">Rio de Janeiro – RJ</div>
 </div>
+
 </div>
 
 <div class="vertical-divider"></div>
 
-<div class="time-display" id="time-container">--:--</div>
+<div class="time-display" id="time-container">
+--:--
+</div>
 
 </div>
 
@@ -233,126 +274,329 @@ margin-left:20px;
 
 <script>
 
-/* CONFIG */
+/* =========================
+   CONFIG
+========================= */
 
-const SLIDE_URL="https://docs.google.com/presentation/d/11YYUb321jAQMPU1xfhPQKa35464Iow3N/embed?start=true&loop=true&rm=minimal&delayms=60000"
-const SHEET_ID="1MFHtG8r4pwrY_tA2yFWEC6gZISJgO05e"
-const VELOCIDADE_PX_SEG=120
+const SLIDE_URL =
+"https://docs.google.com/presentation/d/11YYUb321jAQMPU1xfhPQKa35464Iow3N/embed?start=true&loop=true&rm=minimal&delayms=60000"
 
-const WEATHER_API="https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
+const SHEET_ID =
+"1MFHtG8r4pwrY_tA2yFWEC6gZISJgO05e"
 
-/* SLIDES */
+const VELOCIDADE_PX_SEG = 120
 
-function loadSlides(){
-document.getElementById("slide-frame").src=SLIDE_URL+"&t="+Date.now()
+const WEATHER_API =
+"https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br"
+
+const marquee = document.getElementById("marquee-text")
+
+let duracaoAtual = 120
+
+/* =========================
+   SLIDES OTIMIZADO
+========================= */
+
+function loadSlides() {
+
+try{
+
+const iframe = document.getElementById("slide-frame")
+
+/* Atualiza apenas por minuto */
+const refreshToken = Math.floor(Date.now() / 60000)
+
+const newUrl = SLIDE_URL + "&t=" + refreshToken
+
+if (iframe.src !== newUrl) {
+
+    /* limpa antes */
+    iframe.src = "about:blank"
+
+    setTimeout(() => {
+        iframe.src = newUrl
+    }, 300)
+
 }
 
+}catch(e){
+
+console.log("Erro slides:", e)
+
+}
+
+}
+
+/* Primeira carga */
 loadSlides()
 
-setInterval(loadSlides,900000)
-setInterval(()=>location.reload(),5580000)
+/* Atualiza a cada 30 min */
+setInterval(loadSlides, 1800000)
 
-/* RELÓGIO */
+/* =========================
+   RELÓGIO
+========================= */
 
 function updateClock(){
 
-const now=new Date()
+const now = new Date()
 
-let rawDay=new Intl.DateTimeFormat("pt-BR",{weekday:"long"}).format(now)
-const day=rawDay.charAt(0).toUpperCase()+rawDay.slice(1)
+let rawDay = new Intl.DateTimeFormat(
+"pt-BR",
+{ weekday:"long" }
+).format(now)
 
-const date=new Intl.DateTimeFormat("pt-BR",{day:"numeric",month:"long",year:"numeric"}).format(now)
-const time=now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})
+const day =
+rawDay.charAt(0).toUpperCase() + rawDay.slice(1)
 
-document.getElementById("day-line").textContent=day
-document.getElementById("date-line").textContent=date
-document.getElementById("time-container").textContent=time
+const date = new Intl.DateTimeFormat(
+"pt-BR",
+{
+day:"numeric",
+month:"long",
+year:"numeric"
+}
+).format(now)
+
+const time = now.toLocaleTimeString(
+"pt-BR",
+{
+hour:"2-digit",
+minute:"2-digit"
+}
+)
+
+document.getElementById("day-line").textContent = day
+document.getElementById("date-line").textContent = date
+document.getElementById("time-container").textContent = time
 
 }
 
-setInterval(updateClock,1000)
 updateClock()
+setInterval(updateClock, 1000)
 
-/* CLIMA */
+/* =========================
+   CLIMA
+========================= */
 
 async function fetchWeather(){
 
 try{
 
-const res=await fetch(WEATHER_API)
-const data=await res.json()
+const res = await fetch(WEATHER_API, {
+cache:"no-cache"
+})
 
-document.getElementById("weather-temp").textContent=Math.round(data.main.temp)+"°C"
-document.getElementById("weather-icon-img").src=`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+if(!res.ok){
+throw new Error("Erro na API")
+}
 
-}catch{}
+const data = await res.json()
+
+document.getElementById("weather-temp").textContent =
+Math.round(data.main.temp) + "°C"
+
+document.getElementById("weather-icon-img").src =
+`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+
+}catch(e){
+
+console.log("Erro clima:", e)
+
+/* tenta novamente */
+setTimeout(fetchWeather, 60000)
+
+}
 
 }
 
 fetchWeather()
-setInterval(fetchWeather,900000)
 
-/* NEWS */
+/* Atualiza clima 15 min */
+setInterval(fetchWeather, 900000)
 
-const marquee=document.getElementById("marquee-text")
-let duracaoAtual = 120
+/* =========================
+   NEWS
+========================= */
 
 async function fetchNews(){
 
 try{
 
-const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`
-const res=await fetch(url)
-const text=await res.text()
+const url =
+`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Math.floor(Date.now()/60000)}`
 
-const lines=text.split("\n").slice(1)
+const res = await fetch(url, {
+cache:"no-cache"
+})
 
-const news=lines
-.map(l=>l.replace(/"/g,"").trim())
+if(!res.ok){
+throw new Error("Erro planilha")
+}
+
+const text = await res.text()
+
+const lines = text
+.split("\n")
+.slice(1)
+
+const news = lines
+.map(l => l.replace(/"/g,"").trim())
 .filter(Boolean)
 
-marquee.innerHTML=news.join('<span class="separator">|</span>')
+if(news.length === 0){
+throw new Error("Sem notícias")
+}
 
-setTimeout(()=>{
+marquee.innerHTML =
+news.join('<span class="separator">|</span>')
 
-const larguraTexto=marquee.offsetWidth
-const larguraTela=window.innerWidth
+setTimeout(() => {
 
-duracaoAtual=(larguraTexto+larguraTela)/VELOCIDADE_PX_SEG
+const larguraTexto = marquee.offsetWidth
+const larguraTela = window.innerWidth
 
-marquee.style.animation="none"
-marquee.offsetHeight
-marquee.style.animation=`scrollLeft ${duracaoAtual}s linear infinite`
+duracaoAtual =
+(larguraTexto + larguraTela) / VELOCIDADE_PX_SEG
 
-},100)
+marquee.style.animation = "none"
 
-}catch{}
+void marquee.offsetWidth
+
+marquee.style.animation =
+`scrollLeft ${duracaoAtual}s linear infinite`
+
+}, 300)
+
+}catch(e){
+
+console.log("Erro notícias:", e)
+
+marquee.innerHTML =
+"Últimas notícias indisponíveis no momento"
+
+marquee.style.animation =
+`scrollLeft 40s linear infinite`
 
 }
 
-/* 🔥 CICLO INTELIGENTE */
+}
+
+/* =========================
+   CICLO INTELIGENTE
+========================= */
 
 async function cicloNoticias(){
+
 await fetchNews()
-setTimeout(cicloNoticias, duracaoAtual * 1000)
+
+setTimeout(() => {
+cicloNoticias()
+}, duracaoAtual * 1000)
+
 }
 
 cicloNoticias()
 
-/* FULLSCREEN */
+/* =========================
+   MONITORAMENTO
+========================= */
 
-function openFullscreen(){
+/* Detecta iframe travado */
+setInterval(() => {
 
-const elem=document.documentElement
+const iframe = document.getElementById("slide-frame")
 
-if(elem.requestFullscreen)elem.requestFullscreen()
-else if(elem.webkitRequestFullscreen)elem.webkitRequestFullscreen()
+try{
+
+if(
+!iframe ||
+!iframe.contentWindow
+){
+
+console.log("Iframe travado. Recarregando slides.")
+loadSlides()
 
 }
 
-setTimeout(openFullscreen,2000)
+}catch(e){
+
+/* Cross-origin gera erro mesmo */
+}
+
+}, 300000)
+
+/* Detecta tela branca */
+setInterval(() => {
+
+if(!document.body.innerHTML.trim()){
+
+console.log("Tela branca detectada")
+
+window.location.href =
+window.location.origin +
+window.location.pathname +
+"?recover=" +
+Date.now()
+
+}
+
+}, 60000)
+
+/* Reload seguro a cada 1h */
+setInterval(() => {
+
+if(navigator.onLine){
+
+console.log("Reload preventivo")
+
+window.location.href =
+window.location.origin +
+window.location.pathname +
+"?refresh=" +
+Date.now()
+
+}
+
+}, 3600000)
+
+/* =========================
+   FULLSCREEN
+========================= */
+
+function openFullscreen(){
+
+const elem = document.documentElement
+
+if(elem.requestFullscreen){
+elem.requestFullscreen()
+}
+else if(elem.webkitRequestFullscreen){
+elem.webkitRequestFullscreen()
+}
+
+}
+
+/* Delay maior para Tizen */
+setTimeout(openFullscreen, 4000)
+
+/* =========================
+   ANTI FREEZE TIZEN
+========================= */
+
+/* mantém renderização ativa */
+setInterval(() => {
+
+document.body.style.opacity = "0.999"
+
+setTimeout(() => {
+document.body.style.opacity = "1"
+}, 50)
+
+}, 300000)
 
 </script>
 
 </body>
 </html>
+```
