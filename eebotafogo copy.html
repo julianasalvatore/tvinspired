@@ -1,279 +1,239 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Eleva News - Edição Premium</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Eleva News - Botafogo</title>
 
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    overflow: hidden;
-}
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            font-family: "Segoe UI", Roboto, Arial, sans-serif;
+            overflow: hidden;
+        }
 
-/* SLIDES */
-.presentation-frame {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    z-index: 1;
-}
+        /* SLIDES */
+        .presentation-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1;
+        }
 
-/* BARRA */
-.info-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 13%;
-    min-height: 95px;
-    z-index: 999;
-    background-color: #ff8e03;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    box-shadow: 0 -4px 30px rgba(0,0,0,0.5);
-}
+        /* BARRA INFERIOR */
+        .info-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 13%;
+            min-height: 90px;
+            z-index: 999;
+            background: #ff8e03;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            box-shadow: 0 -4px 20px rgba(0,0,0,.4);
+        }
 
-/* ESQUERDA */
-.left-group {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    background: #ff8e03;
-}
+        .left-group { display: flex; align-items: center; }
 
-.logo-box {
-    background: #fff;
-    border-radius: 12px;
-    height: 70%;
-    aspect-ratio: 1 / 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    margin-right: 20px;
-}
+        .logo-box {
+            background: #fff;
+            border-radius: 10px;
+            height: 65px;
+            width: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+        }
 
-.logo-box img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
+        .logo-box img { max-width: 85%; max-height: 85%; object-fit: contain; }
 
-.vertical-divider {
-    width: 2px;
-    height: 50%;
-    background: rgba(255,255,255,0.4);
-    margin: 0 20px;
-}
+        .vertical-divider {
+            width: 2px;
+            height: 50px;
+            background: rgba(255,255,255,.3);
+            margin: 0 20px;
+        }
 
-.date-display {
-    display: flex;
-    flex-direction: column;
-}
+        .date-display { display: flex; flex-direction: column; min-width: 150px; }
+        .day-line { font-size: 2.8vh; font-weight: 800; } /* Ajustado para caber nome completo */
+        .date-line { font-size: 1.8vh; opacity: 0.9; }
 
-.day-line {
-    font-size: 3.2vh;
-    font-weight: 800;
-    text-transform: capitalize;
-}
+        /* NOTÍCIAS (MARQUEE OTIMIZADO) */
+        .marquee-container {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            margin: 0 20px;
+        }
 
-.date-line {
-    font-size: 1.8vh;
-    opacity: 0.9;
-}
+        #marquee-text {
+            display: inline-block;
+            white-space: nowrap;
+            font-size: 3.5vh;
+            font-weight: 600;
+            padding-left: 100%;
+            animation: scroll-left 45s linear infinite; /* 45s para leitura confortável */
+        }
 
-/* MARQUEE */
-.marquee-container {
-    flex: 1;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-}
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
 
-.marquee-content {
-    position: absolute;
-    white-space: nowrap;
-    will-change: transform;
-    font-size: 3.5vh;
-    font-weight: 600;
-}
+        .separator { margin: 0 50px; color: rgba(255,255,255,0.5); }
 
-.separator {
-    margin: 0 50px;
-    opacity: 0.5;
-}
+        /* DIREITA */
+        .right-group { display: flex; align-items: center; }
 
-/* DIREITA */
-.right-group {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    background: #ff8e03;
-}
+        .weather-container { display: flex; align-items: center; margin-right: 20px; }
 
-.weather-container {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
+        .weather-icon-box img {
+            width: 55px;
+            height: 55px;
+            filter: brightness(0) invert(1);
+        }
 
-.weather-icon-box img {
-    width: 55px;
-    height: 55px;
-    filter: brightness(0) invert(1);
-}
+        .weather-temp { font-size: 3.5vh; font-weight: 800; margin-left: 5px; }
+        .weather-city { font-size: 1.4vh; text-align: right; }
 
-.weather-temp {
-    font-size: 3.8vh;
-    font-weight: 800;
-}
-
-.weather-city {
-    font-size: 1.5vh;
-    opacity: 0.8;
-}
-
-.time-display {
-    font-size: 5.5vh;
-    font-weight: 700;
-    margin-left: 20px;
-}
-
-@keyframes scrollLeft {
-    from { transform: translateX(100vw); }
-    to   { transform: translateX(-100%); }
-}
-</style>
+        .time-display {
+            font-size: 5vh;
+            font-weight: 700;
+            min-width: 120px;
+            text-align: right;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 
 <body>
 
-<iframe id="slide-frame" class="presentation-frame"></iframe>
+    <iframe id="slide-frame" class="presentation-frame"></iframe>
 
-<div class="info-bar">
-
-    <div class="left-group">
-        <div class="logo-box">
-            <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png">
-        </div>
-        <div class="vertical-divider"></div>
-        <div class="date-display">
-            <div id="day-line" class="day-line">...</div>
-            <div id="date-line" class="date-line">...</div>
-        </div>
-    </div>
-
-    <div class="marquee-container">
-        <div id="marquee-text" class="marquee-content">Carregando notícias...</div>
-    </div>
-
-    <div class="right-group">
-        <div class="weather-container">
-            <div class="weather-icon-box">
-                <img id="weather-icon-img">
+    <div class="info-bar">
+        <div class="left-group">
+            <div class="logo-box">
+                <img src="https://d24d7vsshzrslo.cloudfront.net/sites/school10/files/2022-09/logo_escola_eleva.png" alt="Logo">
             </div>
-            <div>
-                <div id="weather-temp" class="weather-temp">--°C</div>
-                <div class="weather-city">Rio de Janeiro</div>
+            <div class="vertical-divider"></div>
+            <div class="date-display">
+                <div id="day-line" class="day-line">--</div>
+                <div id="date-line" class="date-line">--</div>
             </div>
         </div>
-        <div class="vertical-divider"></div>
-        <div id="time-container" class="time-display">--:--</div>
+
+        <div class="marquee-container">
+            <div id="marquee-text">Carregando notícias...</div>
+        </div>
+
+        <div class="right-group">
+            <div class="weather-container">
+                <div class="weather-icon-box">
+                    <img id="weather-icon-img" src="" style="display:none;">
+                </div>
+                <div>
+                    <div id="weather-temp" class="weather-temp">--°C</div>
+                    <div class="weather-city">Rio de Janeiro</div>
+                </div>
+            </div>
+            <div class="vertical-divider"></div>
+            <div id="time-container" class="time-display">00:00</div>
+        </div>
     </div>
 
-</div>
+    <script>
+        /* CONFIGURAÇÕES */
+        const SLIDE_URL = "https://docs.google.com/presentation/d/1DGoAjEoJlrCjzNGgVUDsi8ehTzpwxPJbt6-muG5Ry3k/embed?start=true&loop=true&rm=minimal&delayms=60000";
+        const SHEET_ID = "1CZ0NkBomU3prL1EmSk_baavwJRQySmjzRTf0HdLPMvo";
+        const WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?q=Rio%20de%20Janeiro&appid=ff0a9d4e6f632ea18d6ce175c676d736&units=metric&lang=pt_br";
 
-<script>
-/* CONFIG */
-const SHEET_ID = '1CZ0NkBomU3prL1EmSk_baavwJRQySmjzRTf0HdLPMvo';
-const SLIDE_URL = 'https://docs.google.com/presentation/d/1DGoAjEoJlrCjzNGgVUDsi8ehTzpwxPJbt6-muG5Ry3k/embed?start=true&loop=true&rm=minimal&delayms=60000';
-const VELOCIDADE_PX_SEG = 120;
+        /* INICIALIZAÇÃO */
+        function init() {
+            document.getElementById("slide-frame").src = SLIDE_URL;
+            updateClock();
+            fetchWeather();
+            fetchNews();
+            
+            // Intervalos otimizados para evitar travamentos
+            setInterval(updateClock, 30000); 
+            setInterval(fetchWeather, 900000); // 15 min
+            setInterval(fetchNews, 300000);   // 5 min
+            
+            // Recarregamento total preventivo a cada 4 horas
+            setInterval(() => location.reload(), 14400000);
+        }
 
-/* SLIDES */
-document.getElementById('slide-frame').src = SLIDE_URL;
+        /* RELÓGIO */
+        function updateClock() {
+            const now = new Date();
+            
+            // Dia da semana completo com primeira letra maiúscula
+            let diaSemana = now.toLocaleDateString("pt-BR", { weekday: 'long' });
+            diaSemana = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
-/* DATA / HORA */
-function updateClock() {
-    const now = new Date();
-    const tz = 'America/Sao_Paulo';
-    document.getElementById('day-line').textContent =
-        new Intl.DateTimeFormat('pt-BR',{weekday:'long',timeZone:tz}).format(now);
-    document.getElementById('date-line').textContent =
-        new Intl.DateTimeFormat('pt-BR',{day:'numeric',month:'long',year:'numeric',timeZone:tz}).format(now);
-    document.getElementById('time-container').textContent =
-        now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:tz});
-}
-setInterval(updateClock,1000);
-updateClock();
+            const dataCurta = now.toLocaleDateString("pt-BR", { day: '2-digit', month: 'long' });
+            
+            document.getElementById("day-line").textContent = diaSemana;
+            document.getElementById("date-line").textContent = dataCurta;
+            document.getElementById("time-container").textContent = now.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
+        }
 
-/* CLIMA */
-async function fetchWeather(){
-    const apiKey="ff0a9d4e6f632ea18d6ce175c676d736";
-    const url=`https://api.openweathermap.org/data/2.5/weather?q=Rio de Janeiro&appid=${apiKey}&units=metric&lang=pt_br`;
-    const r=await fetch(url);
-    const d=await r.json();
-    document.getElementById('weather-temp').textContent=`${Math.round(d.main.temp)}°C`;
-    document.getElementById('weather-icon-img').src=`https://openweathermap.org/img/wn/${d.weather[0].icon}@2x.png`;
-}
-fetchWeather();
-setInterval(fetchWeather,600000);
+        /* CLIMA */
+        async function fetchWeather() {
+            try {
+                const res = await fetch(WEATHER_API);
+                const data = await res.json();
+                if (data.main) {
+                    document.getElementById("weather-temp").textContent = Math.round(data.main.temp) + "°C";
+                    const icon = data.weather[0].icon;
+                    const iconImg = document.getElementById("weather-icon-img");
+                    iconImg.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+                    iconImg.style.display = "block";
+                }
+            } catch (e) { console.error("Erro clima"); }
+        }
 
-/* NOTÍCIAS – IGUAL AO PRIMEIRO */
-const marquee = document.getElementById('marquee-text');
-let lastSignature="";
+        /* NOTÍCIAS */
+        async function fetchNews() {
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
+                const res = await fetch(url);
+                const text = await res.text();
+                
+                const news = text.split("\n")
+                    .slice(1)
+                    .map(l => l.replace(/"/g, "").trim())
+                    .filter(l => l.length > 2);
 
-async function fetchNews(){
-    const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&t=${Date.now()}`;
-    const r=await fetch(url);
-    const t=await r.text();
-    const lines=t.split('\n').slice(1);
-    const items=lines.map(l=>l.replace(/^"|"$/g,'').replace(/""/g,'"').trim()).filter(Boolean);
-    const html=(items.length?items:["Bem-vindo à Escola Eleva"]).join('<span class="separator">|</span>');
+                if (news.length > 0) {
+                    const content = news.join(' <span class="separator"> | </span> ');
+                    const marquee = document.getElementById("marquee-text");
+                    
+                    if (marquee.innerHTML !== content) {
+                        marquee.innerHTML = content;
+                    }
+                }
+            } catch (e) { console.error("Erro news"); }
+        }
 
-    if(html.trim()!==lastSignature){
-        lastSignature=html;
-        marquee.innerHTML=html;
-
-        setTimeout(()=>{
-            const wText=marquee.offsetWidth;
-            const wScreen=window.innerWidth;
-            const dur=(wText+wScreen)/VELOCIDADE_PX_SEG;
-            marquee.style.animation='none';
-            marquee.offsetHeight;
-            marquee.style.animation=`scrollLeft ${dur}s linear infinite`;
-        },100);
-    }
-}
-fetchNews();
-setInterval(fetchNews,30000);
-
-/* FULLSCREEN – MESMO COMPORTAMENTO DO PRIMEIRO */
-function openFullScreen(){
-    const el=document.documentElement;
-    if(el.requestFullscreen) el.requestFullscreen();
-    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-}
-
-window.addEventListener('load',()=>setTimeout(openFullScreen,2000));
-document.body.addEventListener('click',openFullScreen);
-
-/* RELOAD DIÁRIO */
-setTimeout(()=>location.reload(true),86400000);
-</script>
+        window.onload = init;
+    </script>
 
 </body>
 </html>
